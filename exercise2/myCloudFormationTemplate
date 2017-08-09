@@ -532,6 +532,7 @@
                 ]
             },
             "Metadata": {
+                
                 "AWS::CloudFormation::Designer": {
                     "id": "88aab4af-cd47-490a-b967-e5c211766512"
                 }
