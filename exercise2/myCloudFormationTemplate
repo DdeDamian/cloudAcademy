@@ -17,28 +17,13 @@
                     "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
                 ]
             },
-            "03d89554-2b17-42a3-a2cd-d79073dae91a": {
-                "size": {
-                    "width": 60,
-                    "height": 60
-                },
-                "position": {
-                    "x": 290,
-                    "y": 270
-                },
-                "z": 0,
-                "embeds": [],
-                "ismemberof": [
-                    "4964b1a1-0628-4a84-abb8-73eff1623d11"
-                ]
-            },
             "b24634d9-5f12-432c-8c31-cef6a5fa5fff": {
                 "size": {
                     "width": 60,
                     "height": 60
                 },
                 "position": {
-                    "x": 160,
+                    "x": 30,
                     "y": 270
                 },
                 "z": 0,
@@ -119,21 +104,6 @@
                 "z": 0,
                 "embeds": []
             },
-            "d369cd72-7a8c-4ac0-bdaf-5d1b150b3a1f": {
-                "size": {
-                    "width": 60,
-                    "height": 60
-                },
-                "position": {
-                    "x": 290,
-                    "y": 170
-                },
-                "z": 0,
-                "embeds": [],
-                "ismemberof": [
-                    "ac54816f-1dab-4c9d-8b19-808f6881775f"
-                ]
-            },
             "ac54816f-1dab-4c9d-8b19-808f6881775f": {
                 "size": {
                     "width": 60,
@@ -152,7 +122,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 160,
+                    "x": 30,
                     "y": 170
                 },
                 "z": 0,
@@ -193,6 +163,126 @@
                     "id": "f3c05c9e-c399-4df9-a081-e70da26ba56a"
                 },
                 "z": 12
+            },
+            "2f57fed2-22be-4ec6-aa70-7cb7475efba2": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 170,
+                    "y": 170
+                },
+                "z": 0,
+                "embeds": [],
+                "isconnectedto": [
+                    "8a2a2d4e-3ae0-4e90-8953-5bec2b66ab4d"
+                ],
+                "isassociatedwith": [
+                    "88aab4af-cd47-490a-b967-e5c211766512"
+                ]
+            },
+            "18415ed8-aeb7-407c-9ca1-b279130d9c27": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 170,
+                    "y": 270
+                },
+                "z": 0,
+                "embeds": [],
+                "isconnectedto": [
+                    "b24634d9-5f12-432c-8c31-cef6a5fa5fff"
+                ],
+                "isassociatedwith": [
+                    "8c11f7cc-2d22-4f59-9019-f78aa5365107"
+                ]
+            },
+            "88aab4af-cd47-490a-b967-e5c211766512": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 290,
+                    "y": 170
+                },
+                "z": 0,
+                "embeds": [],
+                "ismemberof": [
+                    "ac54816f-1dab-4c9d-8b19-808f6881775f"
+                ]
+            },
+            "8c11f7cc-2d22-4f59-9019-f78aa5365107": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 290,
+                    "y": 270
+                },
+                "z": 0,
+                "embeds": [],
+                "ismemberof": [
+                    "4964b1a1-0628-4a84-abb8-73eff1623d11"
+                ]
+            },
+            "186bec7d-bf04-4167-93fe-d4a69fed0582": {
+                "source": {
+                    "id": "88aab4af-cd47-490a-b967-e5c211766512"
+                },
+                "target": {
+                    "id": "ac54816f-1dab-4c9d-8b19-808f6881775f"
+                },
+                "z": 11
+            },
+            "90866fe3-28a7-43a6-803d-a5787bd02ad3": {
+                "source": {
+                    "id": "8c11f7cc-2d22-4f59-9019-f78aa5365107"
+                },
+                "target": {
+                    "id": "4964b1a1-0628-4a84-abb8-73eff1623d11"
+                },
+                "z": 12
+            },
+            "8d4fda3e-d711-4bc6-9660-04a6745c7208": {
+                "source": {
+                    "id": "2f57fed2-22be-4ec6-aa70-7cb7475efba2"
+                },
+                "target": {
+                    "id": "8a2a2d4e-3ae0-4e90-8953-5bec2b66ab4d"
+                },
+                "z": 13
+            },
+            "52e3ed75-5598-4b54-9775-8105ee522295": {
+                "source": {
+                    "id": "18415ed8-aeb7-407c-9ca1-b279130d9c27"
+                },
+                "target": {
+                    "id": "b24634d9-5f12-432c-8c31-cef6a5fa5fff"
+                },
+                "z": 14
+            },
+            "24331fff-d919-4b3a-87cf-baabdd1489be": {
+                "source": {
+                    "id": "18415ed8-aeb7-407c-9ca1-b279130d9c27"
+                },
+                "target": {
+                    "id": "8c11f7cc-2d22-4f59-9019-f78aa5365107"
+                },
+                "z": 15
+            },
+            "a9ec0785-894c-4018-8b14-d02926e60e42": {
+                "source": {
+                    "id": "2f57fed2-22be-4ec6-aa70-7cb7475efba2"
+                },
+                "target": {
+                    "id": "88aab4af-cd47-490a-b967-e5c211766512"
+                },
+                "z": 16
             }
         }
     },
@@ -248,21 +338,6 @@
                 }
             }
         },
-        "MgtBox": {
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "SecurityGroupIds": [
-                    {
-                        "Ref": "MgtBoxSG"
-                    }
-                ]
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "03d89554-2b17-42a3-a2cd-d79073dae91a"
-                }
-            }
-        },
         "LAMPServer": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
@@ -305,21 +380,6 @@
                 }
             }
         },
-        "FTPServer": {
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "SecurityGroupIds": [
-                    {
-                        "Ref": "FTPSG"
-                    }
-                ]
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "d369cd72-7a8c-4ac0-bdaf-5d1b150b3a1f"
-                }
-            }
-        },
         "FTPFS": {
             "Type": "AWS::EFS::FileSystem",
             "Properties": {},
@@ -353,6 +413,72 @@
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "8a2a2d4e-3ae0-4e90-8953-5bec2b66ab4d"
+                }
+            }
+        },
+        "FTPASG": {
+            "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "Properties": {
+                "LoadBalancerNames": [
+                    {
+                        "Ref": "FTPELB"
+                    }
+                ],
+                "LaunchConfigurationName": {
+                    "Ref": "FTPLC"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "2f57fed2-22be-4ec6-aa70-7cb7475efba2"
+                }
+            }
+        },
+        "LAMPASG": {
+            "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "Properties": {
+                "LoadBalancerNames": [
+                    {
+                        "Ref": "LAMPELB"
+                    }
+                ],
+                "LaunchConfigurationName": {
+                    "Ref": "LAMPLC"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "18415ed8-aeb7-407c-9ca1-b279130d9c27"
+                }
+            }
+        },
+        "FTPLC": {
+            "Type": "AWS::AutoScaling::LaunchConfiguration",
+            "Properties": {
+                "SecurityGroups": [
+                    {
+                        "Ref": "FTPSG"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "88aab4af-cd47-490a-b967-e5c211766512"
+                }
+            }
+        },
+        "LAMPLC": {
+            "Type": "AWS::AutoScaling::LaunchConfiguration",
+            "Properties": {
+                "SecurityGroups": [
+                    {
+                        "Ref": "MgtBoxSG"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "8c11f7cc-2d22-4f59-9019-f78aa5365107"
                 }
             }
         }
