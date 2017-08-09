@@ -12,7 +12,10 @@
                     "y": 370
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "ismemberof": [
+                    "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
+                ]
             },
             "03d89554-2b17-42a3-a2cd-d79073dae91a": {
                 "size": {
@@ -24,7 +27,10 @@
                     "y": 270
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "ismemberof": [
+                    "4964b1a1-0628-4a84-abb8-73eff1623d11"
+                ]
             },
             "b24634d9-5f12-432c-8c31-cef6a5fa5fff": {
                 "size": {
@@ -84,7 +90,10 @@
                     "y": 480
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "ismemberof": [
+                    "f3c05c9e-c399-4df9-a081-e70da26ba56a"
+                ]
             },
             "183c4711-f0de-4079-a4e0-e42982265be9": {
                 "size": {
@@ -120,7 +129,10 @@
                     "y": 170
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "ismemberof": [
+                    "ac54816f-1dab-4c9d-8b19-808f6881775f"
+                ]
             },
             "ac54816f-1dab-4c9d-8b19-808f6881775f": {
                 "size": {
@@ -145,6 +157,42 @@
                 },
                 "z": 0,
                 "embeds": []
+            },
+            "6f155d29-5d5b-4cd4-928a-304368cf1260": {
+                "source": {
+                    "id": "43b2730c-693d-48c2-9359-3266444b6c8a"
+                },
+                "target": {
+                    "id": "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
+                },
+                "z": 1
+            },
+            "c1d9c858-cc28-460e-8834-8319cc6fbb9c": {
+                "source": {
+                    "id": "03d89554-2b17-42a3-a2cd-d79073dae91a"
+                },
+                "target": {
+                    "id": "4964b1a1-0628-4a84-abb8-73eff1623d11"
+                },
+                "z": 2
+            },
+            "6c6802c2-7354-4a06-807e-212a2ed39da9": {
+                "source": {
+                    "id": "d369cd72-7a8c-4ac0-bdaf-5d1b150b3a1f"
+                },
+                "target": {
+                    "id": "ac54816f-1dab-4c9d-8b19-808f6881775f"
+                },
+                "z": 11
+            },
+            "b7c02847-5d05-464f-9dfa-1289a70299fe": {
+                "source": {
+                    "id": "f13b227d-b203-44ff-8367-da29e0eeaa6b"
+                },
+                "target": {
+                    "id": "f3c05c9e-c399-4df9-a081-e70da26ba56a"
+                },
+                "z": 12
             }
         }
     },
@@ -160,7 +208,13 @@
         },
         "DataBase": {
             "Type": "AWS::RDS::DBInstance",
-            "Properties": {},
+            "Properties": {
+                "DBSecurityGroups": [
+                    {
+                        "Ref": "DataBaseSG"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "f13b227d-b203-44ff-8367-da29e0eeaa6b"
@@ -178,7 +232,16 @@
         },
         "MgtBoxSG": {
             "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "4964b1a1-0628-4a84-abb8-73eff1623d11"
@@ -187,7 +250,13 @@
         },
         "MgtBox": {
             "Type": "AWS::EC2::Instance",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "MgtBoxSG"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "03d89554-2b17-42a3-a2cd-d79073dae91a"
@@ -196,7 +265,13 @@
         },
         "LAMPServer": {
             "Type": "AWS::EC2::Instance",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "LAMPServerSG"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "43b2730c-693d-48c2-9359-3266444b6c8a"
@@ -205,7 +280,16 @@
         },
         "LAMPServerSG": {
             "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
@@ -223,7 +307,13 @@
         },
         "FTPServer": {
             "Type": "AWS::EC2::Instance",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "FTPSG"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "d369cd72-7a8c-4ac0-bdaf-5d1b150b3a1f"
@@ -239,9 +329,18 @@
                 }
             }
         },
-        "EC2SG45PZE": {
+        "FTPSG": {
             "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "21",
+                        "ToPort": "21",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "ac54816f-1dab-4c9d-8b19-808f6881775f"
