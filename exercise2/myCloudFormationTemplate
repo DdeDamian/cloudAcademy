@@ -373,7 +373,26 @@
         },
         "LAMPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-            "Properties": {},
+            "Properties": {
+                "AvailabilityZones": {
+                    "Fn::GetAZs": ""
+                },
+                "CrossZone": "true",
+                "Listeners": [
+                    {
+                        "LoadBalancerPort": "80",
+                        "InstancePort": "80",
+                        "Protocol": "HTTP"
+                    }
+                ],
+                "HealthCheck": {
+                    "Target": "HTTP:80/",
+                    "HealthyThreshold": "3",
+                    "UnhealthyThreshold": "5",
+                    "Interval": "30",
+                    "Timeout": "5"
+                }
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "b24634d9-5f12-432c-8c31-cef6a5fa5fff"
@@ -409,7 +428,26 @@
         },
         "FTPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-            "Properties": {},
+            "Properties": {
+                "AvailabilityZones": {
+                    "Fn::GetAZs": ""
+                },
+                "CrossZone": "true",
+                "Listeners": [
+                    {
+                        "LoadBalancerPort": "80",
+                        "InstancePort": "80",
+                        "Protocol": "HTTP"
+                    }
+                ],
+                "HealthCheck": {
+                    "Target": "HTTP:80/",
+                    "HealthyThreshold": "3",
+                    "UnhealthyThreshold": "5",
+                    "Interval": "30",
+                    "Timeout": "5"
+                }
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "8a2a2d4e-3ae0-4e90-8953-5bec2b66ab4d"
@@ -418,7 +456,23 @@
         },
         "FTPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Timeout": "PT15M",
+                    "Count": "2"
+                }
+            },
+            "UpdatePolicy": {
+                "AutoScalingRollingUpdate": {
+                    "MaxBatchSize": "1",
+                    "MinInstancesInService": "1",
+                    "PauseTime": "PT15M",
+                    "WaitOnResourceSignals": "true"
+                }
+            },
             "Properties": {
+                "MinSize": "1",
+                "MaxSize": "3",
                 "LoadBalancerNames": [
                     {
                         "Ref": "FTPELB"
@@ -436,7 +490,23 @@
         },
         "LAMPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Timeout": "PT15M",
+                    "Count": "2"
+                }
+            },
+            "UpdatePolicy": {
+                "AutoScalingRollingUpdate": {
+                    "MaxBatchSize": "1",
+                    "MinInstancesInService": "1",
+                    "PauseTime": "PT15M",
+                    "WaitOnResourceSignals": "true"
+                }
+            },
             "Properties": {
+                "MinSize": "1",
+                "MaxSize": "3",
                 "LoadBalancerNames": [
                     {
                         "Ref": "LAMPELB"
