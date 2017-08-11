@@ -24,7 +24,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 30,
+                    "x": -120,
                     "y": 270
                 },
                 "z": 0,
@@ -123,11 +123,14 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 30,
+                    "x": -130,
                     "y": 170
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "isconnectedto": [
+                    "40e2cb01-6f36-4f10-87d1-346708ed0aa8"
+                ]
             },
             "6f155d29-5d5b-4cd4-928a-304368cf1260": {
                 "source": {
@@ -285,20 +288,65 @@
                     "id": "88aab4af-cd47-490a-b967-e5c211766512"
                 },
                 "z": 16
+            },
+            "9576c576-e617-4a52-82fa-fd7b3f48e9c6": {
+                "size": {
+                    "width": 640,
+                    "height": 280
+                },
+                "position": {
+                    "x": 630,
+                    "y": 50
+                },
+                "z": 0,
+                "embeds": [
+                    "9d846e08-e268-42f8-96ed-634d947176e9",
+                    "5d971cd7-9a6e-494c-af5a-ed19c420bb59",
+                    "67bbfd9a-7c63-4bf2-92e7-4ba57934d013"
+                ]
+            },
+            "9d846e08-e268-42f8-96ed-634d947176e9": {
+                "size": {
+                    "width": 140,
+                    "height": 140
+                },
+                "position": {
+                    "x": 680,
+                    "y": 120
+                },
+                "z": 1,
+                "parent": "9576c576-e617-4a52-82fa-fd7b3f48e9c6",
+                "embeds": []
+            },
+            "5d971cd7-9a6e-494c-af5a-ed19c420bb59": {
+                "size": {
+                    "width": 140,
+                    "height": 140
+                },
+                "position": {
+                    "x": 880,
+                    "y": 120
+                },
+                "z": 1,
+                "parent": "9576c576-e617-4a52-82fa-fd7b3f48e9c6",
+                "embeds": []
+            },
+            "67bbfd9a-7c63-4bf2-92e7-4ba57934d013": {
+                "size": {
+                    "width": 140,
+                    "height": 140
+                },
+                "position": {
+                    "x": 1070,
+                    "y": 120
+                },
+                "z": 1,
+                "parent": "9576c576-e617-4a52-82fa-fd7b3f48e9c6",
+                "embeds": []
             }
         }
     },
     "Parameters": {
-        "VpcId": {
-            "Type": "AWS::EC2::VPC::Id",
-            "Description": "VpcId of our existing Virtual Private Cloud (VPC)",
-            "ConstraintDescription": "must be the VPC Id of an existing Virtual Private Cloud."
-        },
-        "Subnets": {
-            "Type": "List<AWS::EC2::Subnet::Id>",
-            "Description": "The list of SubnetIds in our Virtual Private Cloud (VPC)",
-            "ConstraintDescription": "must be a list of at least two existing subnets associated with at least two different availability zones. They should be residing in the selected Virtual Private Cloud."
-        },
         "SSHLocation": {
             "Description": "Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
             "Type": "String",
@@ -586,15 +634,12 @@
                         "Ref": "FTPSG"
                     }
                 ],
-                "KeyName" : 
-                    { 
-                        "Ref" : "KeyName" 
-                        
-                    },
-                "InstanceType" : 
-                    { 
-                        "Ref" : "InstanceType" 
-                    }
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                }
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -620,6 +665,59 @@
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "8c11f7cc-2d22-4f59-9019-f78aa5365107"
+                }
+            }
+        },
+        "OurVPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": "10.0.0.0/16"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9576c576-e617-4a52-82fa-fd7b3f48e9c6"
+                }
+            }
+        },
+        "LAMPVPC": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "OurVPC"
+                },
+                "CidrBlock": "10.0.1.0/24"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9d846e08-e268-42f8-96ed-634d947176e9"
+                }
+            }
+        },
+        "MgtVPC": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "OurVPC"
+                },
+                "CidrBlock": "10.0.2.0/24"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5d971cd7-9a6e-494c-af5a-ed19c420bb59"
+                }
+            }
+        },
+        "FTPVPC": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "OurVPC"
+                },
+                "CidrBlock": "10.0.3.0/24"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "67bbfd9a-7c63-4bf2-92e7-4ba57934d013"
                 }
             }
         }
