@@ -29,12 +29,14 @@
                 "z": 1,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": [
+                    "4734cb2b-fbbb-4d32-a4fe-27fbe3f6fe2d",
+                    "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0",
                     "40c46d66-28b2-48ec-843f-95737bcd6d1c",
                     "c48020e8-fb7b-4865-b954-14b433c480b7",
                     "cca4257e-497b-4ef5-a4a9-64ae14a0e12d",
                     "1548ec77-1f03-48dd-96d7-a2b435ae350f",
-                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38",
-                    "8eb68b0e-fde1-4350-b64c-9ec350104125"
+                    "8eb68b0e-fde1-4350-b64c-9ec350104125",
+                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38"
                 ]
             },
             "1548ec77-1f03-48dd-96d7-a2b435ae350f": {
@@ -204,8 +206,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 850,
-                    "y": 850
+                    "x": 860,
+                    "y": 870
                 },
                 "z": 1,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -274,6 +276,74 @@
                 },
                 "z": 2,
                 "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
+                "embeds": [],
+                "isrelatedto": [
+                    "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0"
+                ]
+            },
+            "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1260,
+                    "y": 1070
+                },
+                "z": 2,
+                "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
+                "embeds": []
+            },
+            "4b5fb1a9-1276-413d-b9b6-6375d435b3ae": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1370,
+                    "y": 1300
+                },
+                "z": 1,
+                "parent": "f5e3fefc-d6ba-47a2-abd3-44bb80885128",
+                "embeds": [],
+                "isrelatedto": [
+                    "8eb68b0e-fde1-4350-b64c-9ec350104125"
+                ]
+            },
+            "aa80b530-e30c-4f8e-9bf7-d532c40328ad": {
+                "source": {
+                    "id": "8eb68b0e-fde1-4350-b64c-9ec350104125"
+                },
+                "target": {
+                    "id": "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0"
+                },
+                "z": 3
+            },
+            "f5e3fefc-d6ba-47a2-abd3-44bb80885128": {
+                "size": {
+                    "width": 140,
+                    "height": 140
+                },
+                "position": {
+                    "x": 1330,
+                    "y": 1260
+                },
+                "z": 0,
+                "embeds": [
+                    "4b5fb1a9-1276-413d-b9b6-6375d435b3ae"
+                ]
+            },
+            "4734cb2b-fbbb-4d32-a4fe-27fbe3f6fe2d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1270,
+                    "y": 890
+                },
+                "z": 2,
+                "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
                 "embeds": []
             }
         }
@@ -312,7 +382,9 @@
     "Resources": {
         "OurVPC": {
             "Type": "AWS::EC2::VPC",
-            "Properties": {},
+            "Properties": {
+                "CidrBlock": "10.0.0.0/16"
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "f98b2cb4-efa5-4af9-882e-359787f155a3"
@@ -324,7 +396,8 @@
             "Properties": {
                 "VpcId": {
                     "Ref": "OurVPC"
-                }
+                },
+                "CidrBlock": "10.0.1.0/24"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -352,7 +425,14 @@
         },
         "FTPLC": {
             "Type": "AWS::AutoScaling::LaunchConfiguration",
-            "Properties": {},
+            "Properties": {
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                }
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "cca4257e-497b-4ef5-a4a9-64ae14a0e12d"
@@ -379,7 +459,14 @@
         },
         "LAMPLC": {
             "Type": "AWS::AutoScaling::LaunchConfiguration",
-            "Properties": {},
+            "Properties": {
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                }
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "40c46d66-28b2-48ec-843f-95737bcd6d1c"
@@ -407,6 +494,9 @@
         "MgtBox": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
                 "SubnetId": {
                     "Ref": "OurSubnet"
                 },
@@ -424,7 +514,18 @@
         },
         "MgtBoxSG": {
             "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {},
+            "Properties": {
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": {
+                            "Ref": "SSHLocation"
+                        }
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "4e2d323d-6f57-4069-adea-d5facb0c9a63"
@@ -479,6 +580,12 @@
         "OurNATGateway": {
             "Type": "AWS::EC2::NatGateway",
             "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "OurElasticIP",
+                        "AllocationId"
+                    ]
+                },
                 "SubnetId": {
                     "Ref": "OurSubnet"
                 }
@@ -486,6 +593,52 @@
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "8eb68b0e-fde1-4350-b64c-9ec350104125"
+                }
+            }
+        },
+        "OurElasticIP": {
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "OurVPC"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0"
+                }
+            }
+        },
+        "OurRoute": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "OurRouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "NatGatewayId": {
+                    "Ref": "OurNATGateway"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4b5fb1a9-1276-413d-b9b6-6375d435b3ae"
+                }
+            }
+        },
+        "OurRouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {},
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f5e3fefc-d6ba-47a2-abd3-44bb80885128"
+                }
+            }
+        },
+        "EFSFS3NIMU": {
+            "Type": "AWS::EFS::FileSystem",
+            "Properties": {},
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4734cb2b-fbbb-4d32-a4fe-27fbe3f6fe2d"
                 }
             }
         }
