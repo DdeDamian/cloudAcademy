@@ -33,7 +33,8 @@
                     "c48020e8-fb7b-4865-b954-14b433c480b7",
                     "cca4257e-497b-4ef5-a4a9-64ae14a0e12d",
                     "1548ec77-1f03-48dd-96d7-a2b435ae350f",
-                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38"
+                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38",
+                    "8eb68b0e-fde1-4350-b64c-9ec350104125"
                 ]
             },
             "1548ec77-1f03-48dd-96d7-a2b435ae350f": {
@@ -236,12 +237,48 @@
                 },
                 "z": 2,
                 "parent": "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
+                "embeds": [],
+                "ismemberof": [
+                    "594a4af0-69dc-4101-bc58-3d0d4dc68a0b"
+                ]
+            },
+            "594a4af0-69dc-4101-bc58-3d0d4dc68a0b": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 650,
+                    "y": 1050
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "439b3761-a109-491a-8442-48c81f7a3ea6": {
+                "source": {
+                    "id": "fd4c10d1-0c09-43d5-a5d8-79ecb5371fb6"
+                },
+                "target": {
+                    "id": "594a4af0-69dc-4101-bc58-3d0d4dc68a0b"
+                },
+                "z": 3
+            },
+            "8eb68b0e-fde1-4350-b64c-9ec350104125": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1370,
+                    "y": 1070
+                },
+                "z": 2,
+                "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
                 "embeds": []
             }
         }
     },
-    
-        "Parameters": {
+    "Parameters": {
         "SSHLocation": {
             "Description": "Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
             "Type": "String",
@@ -417,11 +454,38 @@
             "Properties": {
                 "DBSubnetGroupName": {
                     "Ref": "DBSubnet"
-                }
+                },
+                "VPCSecurityGroups": [
+                    {
+                        "Ref": "MasterDBSG"
+                    }
+                ]
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "fd4c10d1-0c09-43d5-a5d8-79ecb5371fb6"
+                }
+            }
+        },
+        "MasterDBSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {},
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "594a4af0-69dc-4101-bc58-3d0d4dc68a0b"
+                }
+            }
+        },
+        "OurNATGateway": {
+            "Type": "AWS::EC2::NatGateway",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "OurSubnet"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "8eb68b0e-fde1-4350-b64c-9ec350104125"
                 }
             }
         }
