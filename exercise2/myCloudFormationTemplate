@@ -14,7 +14,8 @@
                 "z": 0,
                 "embeds": [],
                 "ismemberof": [
-                    "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
+                    "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4",
+                    "4964b1a1-0628-4a84-abb8-73eff1623d11"
                 ]
             },
             "b24634d9-5f12-432c-8c31-cef6a5fa5fff": {
@@ -36,7 +37,7 @@
                 },
                 "position": {
                     "x": 430,
-                    "y": 270
+                    "y": 370
                 },
                 "z": 0,
                 "embeds": []
@@ -48,7 +49,7 @@
                 },
                 "position": {
                     "x": 430,
-                    "y": 370
+                    "y": 270
                 },
                 "z": 0,
                 "embeds": []
@@ -227,7 +228,8 @@
                 "z": 0,
                 "embeds": [],
                 "ismemberof": [
-                    "4964b1a1-0628-4a84-abb8-73eff1623d11"
+                    "4964b1a1-0628-4a84-abb8-73eff1623d11",
+                    "59948518-12eb-4a3a-af2d-9c6e1ff4e3d4"
                 ]
             },
             "186bec7d-bf04-4167-93fe-d4a69fed0582": {
@@ -338,12 +340,12 @@
                 }
             }
         },
-        "LAMPServer": {
+        "MgtBox": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
                 "SecurityGroupIds": [
                     {
-                        "Ref": "LAMPServerSG"
+                        "Ref": "MgtBoxSG"
                     }
                 ]
             },
@@ -532,7 +534,6 @@
                 ]
             },
             "Metadata": {
-                
                 "AWS::CloudFormation::Designer": {
                     "id": "88aab4af-cd47-490a-b967-e5c211766512"
                 }
@@ -543,7 +544,7 @@
             "Properties": {
                 "SecurityGroups": [
                     {
-                        "Ref": "MgtBoxSG"
+                        "Ref": "LAMPServerSG"
                     }
                 ]
             },
