@@ -240,6 +240,38 @@
             }
         }
     },
+    
+        "Parameters": {
+        "SSHLocation": {
+            "Description": "Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
+            "Type": "String",
+            "MinLength": "9",
+            "MaxLength": "18",
+            "Default": "0.0.0.0/0",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "must be a valid CIDR range of the form x.x.x.x/x."
+        },
+        "KeyName": {
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+        },
+        "InstanceType": {
+            "Description": "WebServer EC2 instance type",
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": [
+                "t1.micro",
+                "t2.nano",
+                "t2.micro",
+                "t2.small",
+                "m1.small",
+                "m3.medium",
+                "c1.medium"
+            ],
+            "ConstraintDescription": "must be a valid EC2 instance type."
+        }
+    },
     "Resources": {
         "OurVPC": {
             "Type": "AWS::EC2::VPC",
