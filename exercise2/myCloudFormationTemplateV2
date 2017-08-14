@@ -506,7 +506,7 @@
         "OurSubnet": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-                "AvailabilityZones": [
+                "AvailabilityZone": [
                     "us-east-1a"
                 ],
                 "VpcId": {
