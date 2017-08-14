@@ -3,8 +3,8 @@
         "AWS::CloudFormation::Designer": {
             "f98b2cb4-efa5-4af9-882e-359787f155a3": {
                 "size": {
-                    "width": 1410,
-                    "height": 1030
+                    "width": 1460,
+                    "height": 520
                 },
                 "position": {
                     "x": 340,
@@ -14,7 +14,6 @@
                 "embeds": [
                     "5c719f22-025f-4205-bcd8-ad4fa4950f7d",
                     "f5e3fefc-d6ba-47a2-abd3-44bb80885128",
-                    "594a4af0-69dc-4101-bc58-3d0d4dc68a0b",
                     "efb6f2b9-dd3d-4e4c-bfe6-a4c2a799c2fa",
                     "92dc42b2-f272-4b4b-8350-3a80f7c4c22f",
                     "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
@@ -212,8 +211,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1040,
-                    "y": 1350
+                    "x": 1570,
+                    "y": 1690
                 },
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -225,8 +224,8 @@
                     "height": 240
                 },
                 "position": {
-                    "x": 420,
-                    "y": 1790
+                    "x": 1050,
+                    "y": 1330
                 },
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -248,8 +247,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 520,
-                    "y": 1880
+                    "x": 1150,
+                    "y": 1420
                 },
                 "z": 3,
                 "parent": "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
@@ -264,11 +263,10 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 250,
-                    "y": 1880
+                    "x": 1150,
+                    "y": 1150
                 },
                 "z": 0,
-                "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": []
             },
             "439b3761-a109-491a-8442-48c81f7a3ea6": {
@@ -371,8 +369,8 @@
                     "height": 150
                 },
                 "position": {
-                    "x": 760,
-                    "y": 1830
+                    "x": 1280,
+                    "y": 1610
                 },
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -384,8 +382,8 @@
                     "height": 150
                 },
                 "position": {
-                    "x": 490,
-                    "y": 2090
+                    "x": 940,
+                    "y": 1610
                 },
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -775,7 +773,7 @@
                     "Ref": "OurVPC"
                 },
                 "CidrBlock": "10.0.4.0/24",
-                "AvailabilityZone": "us-east-2b"
+                "AvailabilityZone": "us-east-1d"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -844,16 +842,9 @@
                         "IpProtocol": "tcp",
                         "FromPort": "0",
                         "ToPort": "65535",
-                        "CidrBlock": "10.0.0.0/16"
-                    }
-                ],
-                "SecurityGroupEgress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
-                        "CidrIp": "10.0.1.0/24"
-                    }
+                        "CidrIp": {
+                            "Ref": "SSHLocation"
+                        }                    }
                 ],
                 "VpcId": {
                     "Ref": "OurVPC"
