@@ -804,6 +804,8 @@
                 "Engine": "MySQL",
                 "EngineVersion": "5.5",
                 "Iops": "1000",
+                "MasterUsername" : "test",
+                "MasterUserPassword" : "test",
                 "DBSubnetGroupName": {
                     "Ref": "DBSubnet"
                 },
