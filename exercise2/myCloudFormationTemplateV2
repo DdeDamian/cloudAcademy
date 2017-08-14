@@ -501,6 +501,9 @@
         "FTPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
             "Properties": {
+                "AvailabilityZones": [
+                    "us-east-1a"
+                ],
                 "MinSize": "1",
                 "MaxSize": "2",
                 "LaunchConfigurationName": {
@@ -554,6 +557,9 @@
         "LAMPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
             "Properties": {
+                "AvailabilityZones": [
+                    "us-east-1a"
+                ],
                 "MinSize": "1",
                 "MaxSize": "2",
                 "LaunchConfigurationName": {
