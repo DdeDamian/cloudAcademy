@@ -1,2 +1,7 @@
-# cloudAcademy
-This repo will be the place to store all my exercises I made for Cloud Academy
+# cloudAcademy - Execise 2
+
+(Work in progress)
+
+Here we have our infrastructure.
+
+   I tried to keep it as simpler as I could.
