@@ -679,6 +679,23 @@
         "MgtBox": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSRegionArch2AMI",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Fn::FindInMap": [
+                                "AWSInstanceType2Arch",
+                                {
+                                    "Ref": "InstanceType"
+                                },
+                                "Arch"
+                            ]
+                        }
+                    ]
+                },
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -880,7 +897,9 @@
         },
         "OurElasticIP": {
             "Type": "AWS::EC2::EIP",
-            "Properties": {},
+            "Properties": {
+                "Domain": "vpc"
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0"
