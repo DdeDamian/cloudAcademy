@@ -416,7 +416,16 @@
                 },
                 "z": 4
             },
-            "6eb90a15-b424-480e-a700-1235a9e90c9c": {
+            "afed02df-e179-4438-811f-a7b52b64d541": {
+                "source": {
+                    "id": "6eb90a15-b424-480e-a700-1235a9e90c9c"
+                },
+                "target": {
+                    "id": "f98b2cb4-efa5-4af9-882e-359787f155a3"
+                },
+                "z": 4
+            },
+            "b12109c5-a479-4714-aa6a-32bc60b4145b": {
                 "size": {
                     "width": 60,
                     "height": 60
@@ -428,18 +437,9 @@
                 "z": 0,
                 "embeds": []
             },
-            "afed02df-e179-4438-811f-a7b52b64d541": {
+            "e22095cb-d14f-4284-ab10-2423699c4c52": {
                 "source": {
-                    "id": "6eb90a15-b424-480e-a700-1235a9e90c9c"
-                },
-                "target": {
-                    "id": "f98b2cb4-efa5-4af9-882e-359787f155a3"
-                },
-                "z": 4
-            },
-            "758e94ec-9747-4f44-8275-daf843d76bfd": {
-                "source": {
-                    "id": "6eb90a15-b424-480e-a700-1235a9e90c9c"
+                    "id": "b12109c5-a479-4714-aa6a-32bc60b4145b"
                 },
                 "target": {
                     "id": "f98b2cb4-efa5-4af9-882e-359787f155a3"
@@ -1003,27 +1003,11 @@
             "Properties": {},
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
-                    "id": "6eb90a15-b424-480e-a700-1235a9e90c9c"
+                    "id": "b12109c5-a479-4714-aa6a-32bc60b4145b"
                 }
             }
         },
-        "EC2VPCG1QAPQ": {
-            "Type": "AWS::EC2::VPCGatewayAttachment",
-            "Properties": {
-                "InternetGatewayId": {
-                    "Ref": "EC2IG2IMNB"
-                },
-                "VpcId": {
-                    "Ref": "OurVPC"
-                }
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "afed02df-e179-4438-811f-a7b52b64d541"
-                }
-            }
-        },
-        "EC2VPCG4LPBO": {
+        "EC2VPCG1QJPL": {
             "Type": "AWS::EC2::VPCGatewayAttachment",
             "Properties": {
                 "InternetGatewayId": {
@@ -1035,7 +1019,7 @@
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
-                    "id": "758e94ec-9747-4f44-8275-daf843d76bfd"
+                    "id": "e22095cb-d14f-4284-ab10-2423699c4c52"
                 }
             }
         }
