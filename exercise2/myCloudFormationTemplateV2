@@ -7,15 +7,15 @@
                     "height": 410
                 },
                 "position": {
-                    "x": 750,
+                    "x": 760,
                     "y": 810
                 },
                 "z": 0,
                 "embeds": [
-                    "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
                     "5c719f22-025f-4205-bcd8-ad4fa4950f7d",
                     "f5e3fefc-d6ba-47a2-abd3-44bb80885128",
-                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
+                    "2cb6ece9-f72f-4532-b2a5-85a77e9c530f"
                 ]
             },
             "9691a5d7-645a-4bb4-85d8-df7e8f3d4667": {
@@ -24,7 +24,7 @@
                     "height": 330
                 },
                 "position": {
-                    "x": 1140,
+                    "x": 1150,
                     "y": 840
                 },
                 "z": 1,
@@ -46,7 +46,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1470,
+                    "x": 1480,
                     "y": 890
                 },
                 "z": 2,
@@ -65,7 +65,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1370,
+                    "x": 1380,
                     "y": 890
                 },
                 "z": 2,
@@ -87,7 +87,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1470,
+                    "x": 1480,
                     "y": 970
                 },
                 "z": 2,
@@ -106,7 +106,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1370,
+                    "x": 1380,
                     "y": 970
                 },
                 "z": 2,
@@ -170,7 +170,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1470,
+                    "x": 1480,
                     "y": 1070
                 },
                 "z": 2,
@@ -207,8 +207,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 860,
-                    "y": 870
+                    "x": 880,
+                    "y": 830
                 },
                 "z": 1,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
@@ -220,13 +220,17 @@
                     "height": 160
                 },
                 "position": {
-                    "x": 800,
-                    "y": 1000
+                    "x": 850,
+                    "y": 930
                 },
                 "z": 1,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": [
                     "fd4c10d1-0c09-43d5-a5d8-79ecb5371fb6"
+                ],
+                "isrelatedto": [
+                    "f98b2cb4-efa5-4af9-882e-359787f155a3",
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
                 ]
             },
             "fd4c10d1-0c09-43d5-a5d8-79ecb5371fb6": {
@@ -235,8 +239,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 860,
-                    "y": 1050
+                    "x": 910,
+                    "y": 980
                 },
                 "z": 2,
                 "parent": "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
@@ -251,8 +255,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 650,
-                    "y": 1050
+                    "x": 660,
+                    "y": 980
                 },
                 "z": 0,
                 "embeds": []
@@ -272,7 +276,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1370,
+                    "x": 1380,
                     "y": 1070
                 },
                 "z": 2,
@@ -288,7 +292,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1260,
+                    "x": 1270,
                     "y": 1070
                 },
                 "z": 2,
@@ -301,7 +305,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1370,
+                    "x": 1380,
                     "y": 1300
                 },
                 "z": 1,
@@ -326,7 +330,7 @@
                     "height": 140
                 },
                 "position": {
-                    "x": 1330,
+                    "x": 1340,
                     "y": 1260
                 },
                 "z": 0,
@@ -341,7 +345,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1270,
+                    "x": 1280,
                     "y": 890
                 },
                 "z": 2,
@@ -379,6 +383,47 @@
                 "c1.medium"
             ],
             "ConstraintDescription": "must be a valid EC2 instance type."
+        }
+    },
+    "Mappings": {
+        "AWSInstanceType2Arch": {
+            "t2.micro": {
+                "Arch": "HVM64"
+            },
+            "t2.small": {
+                "Arch": "HVM64"
+            },
+            "t2.medium": {
+                "Arch": "HVM64"
+            },
+            "m1.small": {
+                "Arch": "PV64"
+            },
+            "m3.medium": {
+                "Arch": "HVM64"
+            }
+        },
+        "AWSRegionArch2AMI": {
+            "us-east-1": {
+                "PV64": "ami-2a69aa47",
+                "HVM64": "ami-6869aa05",
+                "HVMG2": "ami-c5eadcd3"
+            },
+            "us-west-2": {
+                "PV64": "ami-7f77b31f",
+                "HVM64": "ami-7172b611",
+                "HVMG2": "ami-aaebfcd3"
+            },
+            "us-west-1": {
+                "PV64": "ami-a2490dc2",
+                "HVM64": "ami-31490d51",
+                "HVMG2": "ami-68002c08"
+            },
+            "us-east-2": {
+                "PV64": "NOT_SUPPORTED",
+                "HVM64": "ami-f6035893",
+                "HVMG2": "NOT_SUPPORTED"
+            }
         }
     },
     "Resources": {
@@ -430,6 +475,23 @@
         "FTPLC": {
             "Type": "AWS::AutoScaling::LaunchConfiguration",
             "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSRegionArch2AMI",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Fn::FindInMap": [
+                                "AWSInstanceType2Arch",
+                                {
+                                    "Ref": "InstanceType"
+                                },
+                                "Arch"
+                            ]
+                        }
+                    ]
+                },
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -551,6 +613,7 @@
         "MgtBoxSG": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
+                "GroupDescription": "Allow SHH connection",
                 "SecurityGroupIngress": [
                     {
                         "IpProtocol": "tcp",
@@ -620,7 +683,19 @@
         },
         "DBSubnet": {
             "Type": "AWS::RDS::DBSubnetGroup",
-            "Properties": {},
+            "Properties": {
+                "DBSubnetGroupDescription": "Aurora Subnet Group using subnets from 2 AZs",
+                "SubnetIds": {
+                    "Fn::Join": [
+                        ",",
+                        [
+                            {
+                                "Ref": "OurSubnet"
+                            }
+                        ]
+                    ]
+                }
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "2cb6ece9-f72f-4532-b2a5-85a77e9c530f"
@@ -647,7 +722,25 @@
         },
         "MasterDBSG": {
             "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {},
+            "Properties": {
+                "GroupDescription": "Allow internal VPC connections",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrBlock": "10.0.1.0/24"
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrIp": "10.0.1.0/24"
+                    }
+                ]
+            },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "594a4af0-69dc-4101-bc58-3d0d4dc68a0b"
@@ -714,7 +807,7 @@
                 }
             }
         },
-        "EFSFS3NIMU": {
+        "OurFileSystem": {
             "Type": "AWS::EFS::FileSystem",
             "Properties": {},
             "Metadata": {
