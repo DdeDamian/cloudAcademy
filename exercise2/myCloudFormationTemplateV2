@@ -506,6 +506,9 @@
         "OurSubnet": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
+                "AvailabilityZones": [
+                    "us-east-1a"
+                ],
                 "VpcId": {
                     "Ref": "OurVPC"
                 },
@@ -754,7 +757,7 @@
                     "Ref": "OurVPC"
                 },
                 "CidrBlock": "10.0.4.0/24",
-                "AvailabilityZone": "us-east-1d"
+                "AvailabilityZone": "us-east-1a"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -804,8 +807,8 @@
                 "Engine": "MySQL",
                 "EngineVersion": "5.5",
                 "Iops": "1000",
-                "MasterUsername" : "test",
-                "MasterUserPassword" : "test",
+                "MasterUsername": "testtesttest",
+                "MasterUserPassword": "testtesttest",
                 "DBSubnetGroupName": {
                     "Ref": "DBSubnet"
                 },
