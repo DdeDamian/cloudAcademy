@@ -35,12 +35,12 @@
                 "embeds": [
                     "4734cb2b-fbbb-4d32-a4fe-27fbe3f6fe2d",
                     "40c46d66-28b2-48ec-843f-95737bcd6d1c",
-                    "c48020e8-fb7b-4865-b954-14b433c480b7",
                     "cca4257e-497b-4ef5-a4a9-64ae14a0e12d",
-                    "1548ec77-1f03-48dd-96d7-a2b435ae350f",
                     "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0",
                     "8eb68b0e-fde1-4350-b64c-9ec350104125",
-                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38"
+                    "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38",
+                    "c48020e8-fb7b-4865-b954-14b433c480b7",
+                    "1548ec77-1f03-48dd-96d7-a2b435ae350f"
                 ]
             },
             "1548ec77-1f03-48dd-96d7-a2b435ae350f": {
@@ -56,7 +56,8 @@
                 "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
                 "embeds": [],
                 "isconnectedto": [
-                    "de1fad30-ae96-4261-b71e-0d5b1eec7e7a"
+                    "de1fad30-ae96-4261-b71e-0d5b1eec7e7a",
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
                 ],
                 "isassociatedwith": [
                     "cca4257e-497b-4ef5-a4a9-64ae14a0e12d"
@@ -97,7 +98,8 @@
                 "parent": "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
                 "embeds": [],
                 "isconnectedto": [
-                    "4918e21e-5c92-4a06-901c-57adc5788726"
+                    "4918e21e-5c92-4a06-901c-57adc5788726",
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
                 ],
                 "isassociatedwith": [
                     "40c46d66-28b2-48ec-843f-95737bcd6d1c"
@@ -501,6 +503,11 @@
         "FTPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
             "Properties": {
+                "VPCZoneIdentifier": [
+                    {
+                        "Ref": "OurSubnet"
+                    }
+                ],
                 "AvailabilityZones": [
                     "us-east-1a"
                 ],
@@ -557,6 +564,11 @@
         "LAMPASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
             "Properties": {
+                "VPCZoneIdentifier": [
+                    {
+                        "Ref": "OurSubnet"
+                    }
+                ],
                 "AvailabilityZones": [
                     "us-east-1a"
                 ],
@@ -763,7 +775,7 @@
                     "Ref": "OurVPC"
                 },
                 "CidrBlock": "10.0.4.0/24",
-                "AvailabilityZone": "us-west-2b"
+                "AvailabilityZone": "us-east-2b"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -778,7 +790,7 @@
                     "Ref": "OurVPC"
                 },
                 "CidrBlock": "10.0.3.0/24",
-                "AvailabilityZone": "us-west-2c"
+                "AvailabilityZone": "us-east-2c"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -832,7 +844,7 @@
                         "IpProtocol": "tcp",
                         "FromPort": "0",
                         "ToPort": "65535",
-                        "CidrBlock": "10.0.1.0/24"
+                        "CidrBlock": "10.0.0.0/16"
                     }
                 ],
                 "SecurityGroupEgress": [
