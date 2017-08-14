@@ -34,11 +34,11 @@
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": [
                     "4734cb2b-fbbb-4d32-a4fe-27fbe3f6fe2d",
-                    "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0",
                     "40c46d66-28b2-48ec-843f-95737bcd6d1c",
                     "c48020e8-fb7b-4865-b954-14b433c480b7",
                     "cca4257e-497b-4ef5-a4a9-64ae14a0e12d",
                     "1548ec77-1f03-48dd-96d7-a2b435ae350f",
+                    "e5d92f07-fc3b-4cfa-b32c-eaa8777b82c0",
                     "8eb68b0e-fde1-4350-b64c-9ec350104125",
                     "e5d78b3b-f8d5-4cb1-93eb-824ec1dcfa38"
                 ]
@@ -607,9 +607,9 @@
         "FTPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "AvailabilityZones": {
-                    "Fn::GetAZs": ""
-                },
+                "AvailabilityZones": [
+                    "us-east-1a"
+                ],
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
@@ -634,9 +634,9 @@
         "LAMPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "AvailabilityZones": {
-                    "Fn::GetAZs": ""
-                },
+                "AvailabilityZones": [
+                    "us-east-1a"
+                ],
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
