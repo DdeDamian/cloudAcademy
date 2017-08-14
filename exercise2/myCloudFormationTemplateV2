@@ -141,6 +141,9 @@
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": [],
+                "isconnectedto": [
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                ],
                 "isrelatedto": [
                     "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
                 ]
@@ -157,6 +160,9 @@
                 "z": 2,
                 "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
                 "embeds": [],
+                "isconnectedto": [
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                ],
                 "isrelatedto": [
                     "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
                 ]
@@ -635,9 +641,11 @@
         "FTPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "Subnets": {
-                    "Ref": "OurSubnet"
-                },
+                "Subnets": [
+                    {
+                        "Ref": "OurSubnet"
+                    }
+                ],
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
@@ -662,9 +670,11 @@
         "LAMPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "Subnets": {
-                    "Ref": "OurSubnet"
-                },
+                "Subnets": [
+                    {
+                        "Ref": "OurSubnet"
+                    }
+                ],
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
