@@ -18,7 +18,9 @@
                     "efb6f2b9-dd3d-4e4c-bfe6-a4c2a799c2fa",
                     "92dc42b2-f272-4b4b-8350-3a80f7c4c22f",
                     "2cb6ece9-f72f-4532-b2a5-85a77e9c530f",
-                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667",
+                    "4918e21e-5c92-4a06-901c-57adc5788726",
+                    "de1fad30-ae96-4261-b71e-0d5b1eec7e7a"
                 ]
             },
             "9691a5d7-645a-4bb4-85d8-df7e8f3d4667": {
@@ -27,7 +29,7 @@
                     "height": 360
                 },
                 "position": {
-                    "x": 410,
+                    "x": 430,
                     "y": 1350
                 },
                 "z": 2,
@@ -49,7 +51,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 500,
+                    "x": 520,
                     "y": 1590
                 },
                 "z": 3,
@@ -69,7 +71,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 680,
+                    "x": 700,
                     "y": 1590
                 },
                 "z": 3,
@@ -91,7 +93,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 500,
+                    "x": 520,
                     "y": 1490
                 },
                 "z": 3,
@@ -111,7 +113,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 680,
+                    "x": 700,
                     "y": 1490
                 },
                 "z": 3,
@@ -133,11 +135,15 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 250,
+                    "x": 350,
                     "y": 1590
                 },
-                "z": 1,
-                "embeds": []
+                "z": 2,
+                "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
+                "embeds": [],
+                "isrelatedto": [
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                ]
             },
             "4918e21e-5c92-4a06-901c-57adc5788726": {
                 "size": {
@@ -145,11 +151,15 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 250,
+                    "x": 350,
                     "y": 1490
                 },
-                "z": 1,
-                "embeds": []
+                "z": 2,
+                "parent": "f98b2cb4-efa5-4af9-882e-359787f155a3",
+                "embeds": [],
+                "isrelatedto": [
+                    "9691a5d7-645a-4bb4-85d8-df7e8f3d4667"
+                ]
             },
             "a1763c83-9779-441d-b147-d63980cb3f5c": {
                 "source": {
@@ -175,7 +185,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 780,
+                    "x": 800,
                     "y": 1400
                 },
                 "z": 3,
@@ -191,8 +201,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 780,
-                    "y": 1200
+                    "x": 800,
+                    "y": 1210
                 },
                 "z": 1,
                 "embeds": []
@@ -286,7 +296,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 500,
+                    "x": 520,
                     "y": 1400
                 },
                 "z": 3,
@@ -302,7 +312,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 680,
+                    "x": 700,
                     "y": 1400
                 },
                 "z": 3,
@@ -318,7 +328,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 250,
+                    "x": 190,
                     "y": 1400
                 },
                 "z": 0,
@@ -358,7 +368,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 780,
+                    "x": 800,
                     "y": 1590
                 },
                 "z": 3,
@@ -625,9 +635,9 @@
         "FTPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "AvailabilityZones": [
-                    "us-east-1a"
-                ],
+                "Subnets": {
+                    "Ref": "OurSubnet"
+                },
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
@@ -652,9 +662,9 @@
         "LAMPELB": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
-                "AvailabilityZones": [
-                    "us-east-1a"
-                ],
+                "Subnets": {
+                    "Ref": "OurSubnet"
+                },
                 "Listeners": [
                     {
                         "LoadBalancerPort": "80",
