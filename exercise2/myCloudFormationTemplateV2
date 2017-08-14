@@ -790,7 +790,7 @@
                     "Ref": "OurVPC"
                 },
                 "CidrBlock": "10.0.3.0/24",
-                "AvailabilityZone": "us-east-2c"
+                "AvailabilityZone": "us-east-1a"
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
