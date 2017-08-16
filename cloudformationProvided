@@ -1,0 +1,568 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: VPC stack with 2+2 public/private subnets
+Parameters:
+  KeyPair:
+    Description: Choose the Key for SSH access
+    Type : AWS::EC2::KeyPair::KeyName
+    MinLength: 1
+    MaxLength: 255
+    ConstraintDescription: "Must specify a KeyPair"
+  CidrBlock:
+    Description: IPv4 CIDR
+    Type : String
+    MinLength: 9
+    MaxLength: 18
+    Default: 10.100.0.0/21
+  PrivBlockSubnetA:
+    Description: Private subnet IPv4 for zone A
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 10.100.1.0/24
+  PrivBlockSubnetB:
+    Description: Private subnet IPv4 for zone B
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 10.100.2.0/24
+  PubBlockSubnetA:
+    Description: Public subnet IPv4 for zone A
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 10.100.5.0/24
+  PubBlockSubnetB:
+    Description: Public subnet IPv4 for zone B
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 10.100.6.0/24
+Mappings:
+  RegionMap:
+    ap-northeast-1:
+      AvailabilityZoneA: "ap-northeast-1c"
+      AvailabilityZoneB: "ap-northeast-1b"
+      AmznLinuxAmi: "ami-0c11b26d"
+      CentOS7Ami: "ami-eec1c380"
+      RegionAlias: "Tokyo"
+    ap-northeast-2:
+      AvailabilityZoneA: "ap-northeast-2c"
+      AvailabilityZoneB: "ap-northeast-2a"
+      AmznLinuxAmi: "ami-983ce8f6"
+      CentOS7Ami: "ami-c74789a9"
+      RegionAlias: "Seoul"
+    ap-south-1:
+      AvailabilityZoneA: "ap-south-1b"
+      AvailabilityZoneB: "ap-south-1a"
+      AmznLinuxAmi: "NOT-AVAILABLE"
+      CentOS7Ami: "ami-95cda6fa"
+      RegionAlias: "Mumbai"
+    ap-southeast-1:
+      AvailabilityZoneA: "ap-southeast-1b"
+      AvailabilityZoneB: "ap-southeast-1a"
+      AmznLinuxAmi: "ami-b953f2da"
+      CentOS7Ami: "ami-f068a193"
+      RegionAlias: "Singapore"
+    ap-southeast-2:
+      AvailabilityZoneA: "ap-southeast-2c"
+      AvailabilityZoneB: "ap-southeast-2b"
+      AmznLinuxAmi: "ami-db704cb8"
+      CentOS7Ami: "ami-fedafc9d"
+      RegionAlias: "Sydney"
+    eu-central-1:
+      AvailabilityZoneA: "eu-central-1b"
+      AvailabilityZoneB: "eu-central-1a"
+      AmznLinuxAmi: "ami-f9619996"
+      CentOS7Ami: "ami-9bf712f4"
+      RegionAlias: "Frankfurt"
+    eu-west-1:
+      AvailabilityZoneA: "eu-west-1c"
+      AvailabilityZoneB: "eu-west-1b"
+      AmznLinuxAmi: "ami-9398d3e0"
+      CentOS7Ami: "ami-7abd0209"
+      RegionAlias: "Ireland"
+    sa-east-1:
+      AvailabilityZoneA: "sa-east-1c"
+      AvailabilityZoneB: "sa-east-1b"
+      AmznLinuxAmi: "ami-97831ffb"
+      CentOS7Ami: "ami-26b93b4a"
+      RegionAlias: "SaoPaulo"
+    us-east-1:
+      AvailabilityZoneA: "us-east-1e"
+      AvailabilityZoneB: "us-east-1d"
+      AmznLinuxAmi: "ami-b73b63a0"
+      CentOS7Ami: "ami-6d1c2007"
+      RegionAlias: "Virginia"
+    us-east-2:
+      AvailabilityZoneA: "us-east-2c"
+      AvailabilityZoneB: "us-east-2b"
+      AmznLinuxAmi: "ami-58277d3d"
+      CentOS7Ami: "ami-6a2d760f"
+      RegionAlias: "Ohio"
+    us-west-1:
+      AvailabilityZoneA: "us-west-1c"
+      AvailabilityZoneB: "us-west-1b"
+      AmznLinuxAmi: "ami-23e8a343"
+      CentOS7Ami: "ami-af4333cf"
+      RegionAlias: "California"
+    us-west-2:
+      AvailabilityZoneA: "us-west-2c"
+      AvailabilityZoneB: "us-west-2b"
+      AmznLinuxAmi: "ami-5ec1673e"
+      CentOS7Ami: "ami-d2c924b2"
+      RegionAlias: "Oregon"
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    DeletionPolicy: Delete
+    Properties:
+      CidrBlock: !Ref CidrBlock
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: !Ref "AWS::StackName"  
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DeletionPolicy: Delete
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", InternetGateway]]
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+  PrivSubnetA:
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties:
+      AvailabilityZone:
+        !FindInMap [ RegionMap, !Ref "AWS::Region" , AvailabilityZoneA ]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PrivBlockSubnetA
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PrivSubnetA]]
+  PrivSubnetB:
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties:
+      AvailabilityZone:
+        !FindInMap [ RegionMap, !Ref "AWS::Region" , AvailabilityZoneB ]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PrivBlockSubnetB
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PrivSubnetB]]
+  ElasticIPNatGatewayA:
+    Type: AWS::EC2::EIP
+    DeletionPolicy: Delete
+    Properties:
+      Domain: vpc
+  ElasticIPNatGatewayB:
+    Type: AWS::EC2::EIP
+    DeletionPolicy: Delete
+    Properties:
+      Domain: vpc
+  NatGatewayA:
+    DependsOn: AttachGateway
+    Type: AWS::EC2::NatGateway
+    DeletionPolicy: Delete
+    Properties:
+      AllocationId:
+        !GetAtt ElasticIPNatGatewayA.AllocationId
+      SubnetId:
+        !Ref PubSubnetA
+  NatGatewayB:
+    DependsOn: AttachGateway
+    Type: AWS::EC2::NatGateway
+    DeletionPolicy: Delete
+    Properties:
+      AllocationId:
+        !GetAtt ElasticIPNatGatewayB.AllocationId
+      SubnetId:
+        !Ref PubSubnetB
+  PrivRouteTableSubnetA:
+    Type: AWS::EC2::RouteTable
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PrivRouteTableSubnetA]]
+  PrivRouteTableSubnetB:
+    Type: AWS::EC2::RouteTable
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PrivRouteTableSubnetB]]
+  PrivRouteSubnetA:
+    Type: AWS::EC2::Route
+    DeletionPolicy: Delete
+    Properties:
+      RouteTableId:
+        !Ref PrivRouteTableSubnetA
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        !Ref NatGatewayA
+  PrivRouteSubnetB:
+    Type: AWS::EC2::Route
+    DeletionPolicy: Delete
+    Properties:
+      RouteTableId:
+        !Ref PrivRouteTableSubnetB
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        !Ref NatGatewayB
+  PrivRouteTableAssociationSubnetA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PrivSubnetA
+      RouteTableId: !Ref PrivRouteTableSubnetA
+  PrivRouteTableAssociationSubnetB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PrivSubnetB
+      RouteTableId: !Ref PrivRouteTableSubnetB
+  PrivNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PrivNetworkAcl]]
+  InboundPrivNetworkAclEntry:
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties:
+      NetworkAclId: !Ref PrivNetworkAcl
+      RuleNumber: 900
+      Protocol: -1
+      RuleAction: allow
+      Egress: false
+      CidrBlock: 0.0.0.0/0
+      PortRange:
+        From: -1
+        To: -1
+  OutBoundPrivNetworkAclEntry:
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties:
+      NetworkAclId: !Ref PrivNetworkAcl
+      RuleNumber: 900
+      Protocol: -1
+      RuleAction: allow
+      Egress: true
+      CidrBlock: 0.0.0.0/0
+      PortRange:
+        From: -1
+        To: -1
+  PrivSubnetANetworkAclAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PrivSubnetA
+      NetworkAclId: !Ref PrivNetworkAcl
+  PrivSubnetBNetworkAclAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PrivSubnetB
+      NetworkAclId: !Ref PrivNetworkAcl
+  PubSubnetA:
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties:
+      AvailabilityZone: !FindInMap [ RegionMap, !Ref "AWS::Region" , AvailabilityZoneA ]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PubBlockSubnetA
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PubSubnetA]]
+  PubSubnetB:
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties:
+      AvailabilityZone: !FindInMap [ RegionMap, !Ref "AWS::Region" , AvailabilityZoneB ]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PubBlockSubnetB
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PubSubnetB]]
+  PubRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    DeletionPolicy: Delete
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  PubRouteTable:
+    Type: AWS::EC2::RouteTable
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PubRouteTable]]
+  SubnetAPubRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PubSubnetA
+      RouteTableId: !Ref PubRouteTable
+  SubnetBPubRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PubSubnetB
+      RouteTableId: !Ref PubRouteTable
+  PubNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", PubNetworkAcl]]
+  InboundPubNetworkAclEntry:
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties:
+      NetworkAclId: !Ref PubNetworkAcl
+      RuleNumber: 900
+      Protocol: -1
+      RuleAction: allow
+      Egress: false
+      CidrBlock: 0.0.0.0/0
+      PortRange:
+        From: -1
+        To: -1
+  OutBoundPubNetworkAclEntry:
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties:
+      NetworkAclId: !Ref PubNetworkAcl
+      RuleNumber: 900
+      Protocol: -1
+      RuleAction: allow
+      Egress: true
+      CidrBlock: 0.0.0.0/0
+      PortRange:
+        From: -1
+        To: -1
+  PubSubnetANetworkAclAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PubSubnetA
+      NetworkAclId: !Ref PubNetworkAcl
+  PubSubnetBNetworkAclAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId:
+        !Ref PubSubnetB
+      NetworkAclId:
+        !Ref PubNetworkAcl
+  ElasticIPJumpHost:
+    Type: AWS::EC2::EIP
+    DeletionPolicy: Delete
+    Properties:
+      Domain: vpc
+  Ec2InstanceJumpHost:
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PubSubnetA
+      InstanceType: "t2.micro"
+      KeyName: !Ref KeyPair
+      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region" , AmznLinuxAmi ]
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum -y install fail2ban
+          chkconfig fail2ban on
+          service fail2ban start
+      SecurityGroupIds:
+        - !Ref PublicSSH
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", JumpHost]]
+  ElasticIPAssociationJumpHost:
+    Type: "AWS::EC2::EIPAssociation"
+    DeletionPolicy: Delete
+    Properties:
+      AllocationId: !GetAtt ElasticIPJumpHost.AllocationId
+      InstanceId: !Ref Ec2InstanceJumpHost
+  Ec2InstanceDemoPublicHTTP:
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PubSubnetB
+      InstanceType: "t2.nano"
+      KeyName: !Ref KeyPair
+      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region" , CentOS7Ami ]
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          useradd -m ec2-user
+          cp -a /home/centos/.ssh/ /home/ec2-user/.
+          chown -R ec2-user: /home/ec2-user
+          echo 'ec2-user ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/91-ec2-user
+          chmod 440 /etc/sudoers.d/91-ec2-user
+          yum -y install httpd
+          systemctl enable httpd
+          systemctl start httpd
+      SecurityGroupIds:
+        - !Ref PublicHTTP
+        - !Ref Management
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", DemoPublicHTTP]]
+  Ec2InstanceDemoPrivateSSH:
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties:
+      SubnetId: !Ref PrivSubnetB
+      InstanceType: "t2.nano"
+      KeyName: !Ref KeyPair
+      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region" , CentOS7Ami ]
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          useradd -m ec2-user
+          cp -a /home/centos/.ssh/ /home/ec2-user/.
+          chown -R ec2-user: /home/ec2-user
+          echo 'ec2-user ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/91-ec2-user
+          chmod 440 /etc/sudoers.d/91-ec2-user
+      SecurityGroupIds:
+        - !Ref PrivateSubnet
+        - !Ref Management
+      Tags:
+      - Key: Name
+        Value: !Join [ "", [ !Ref "AWS::StackName", DemoPrivateHost]]
+  PublicSSH:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: "Enable SSH Access"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: '8'
+          ToPort: "-1"
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref "AWS::StackName", PublicSSH]]
+  PublicHTTP:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: "Enable HTTP/HTTPS Access"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref "AWS::StackName", PublicHTTP]]
+  PublicSubnet:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: "Allow all traffic between instances in public subnet"
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref "AWS::StackName", PublicSubnet]]
+  PublicSubnetIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    DeletionPolicy: Delete
+    Properties:
+      GroupId: !Ref PublicSubnet
+      IpProtocol: -1
+      FromPort: -1
+      ToPort: -1
+      SourceSecurityGroupId: !Ref PublicSubnet
+  PrivateSubnet:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: "Allow all traffic between instances in private subnet"
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref "AWS::StackName", PrivateSubnet]]
+  Management:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: "Access from management hosts (Jump/Monitor/Alarms/Orchestration)"
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !Join [ "", [ !GetAtt Ec2InstanceJumpHost.PrivateIp, /32]]
+      - IpProtocol: tcp
+        FromPort: 3389
+        ToPort: 3389
+        CidrIp: !Join [ "", [ !GetAtt Ec2InstanceJumpHost.PrivateIp, /32]]
+      - IpProtocol: icmp
+        FromPort: '8'
+        ToPort: "-1"
+        CidrIp: !Join [ "", [ !GetAtt Ec2InstanceJumpHost.PrivateIp, /32]]
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref "AWS::StackName", Management]]
+  PrivateSubnetIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    DeletionPolicy: Delete
+    Properties:
+      GroupId: !Ref PrivateSubnet
+      IpProtocol: -1
+      FromPort: -1
+      ToPort: -1
+      SourceSecurityGroupId: !Ref PrivateSubnet
+Outputs:
+  VpcId:
+    Description: The ID of the VPC
+    Value: !Join [ " ", [ "AWS VPC ID",!Ref Vpc, !Ref "AWS::Region"]]
+  JumpHostIpAddresses:
+    Description: IP's of SSH jump host
+    Value: !Join [ " ", [ !GetAtt Ec2InstanceJumpHost.PublicIp, "-" ,!GetAtt Ec2InstanceJumpHost.PrivateIp]] 
+  PrivSubnetA:
+    Description: First private subnet details
+    Value: !Join [ " ", [ "PrivSubnetA in:", !GetAtt PrivSubnetA.AvailabilityZone, "- CIDR:" , !Ref PrivBlockSubnetA]] 
+  PrivSubnetB:
+    Description: Second public subnet details
+    Value: !Join [ " ", [ "PrivSubnetB in:", !GetAtt PrivSubnetA.AvailabilityZone, "- CIDR:" , !Ref PrivBlockSubnetB]] 
+  PubSubnetA:
+    Description: First public subnet details
+    Value: !Join [ " ", [ "PubSubnetA in:", !GetAtt PubSubnetA.AvailabilityZone, "- CIDR:" , !Ref PubBlockSubnetA]] 
+  PubSubnetB:
+    Description: Second public subnet details
+    Value: !Join [ " ", [ "PubSubnetB in:", !GetAtt PubSubnetB.AvailabilityZone, "- CIDR:" , !Ref PubBlockSubnetB]] 
