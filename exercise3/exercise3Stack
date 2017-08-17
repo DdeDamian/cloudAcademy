@@ -1,6 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Full stack for Exercise 3 of Globant's Cloud Academy
 Parameters:
+  AvailabilityZone:
+    Type: String
+    Default: us-west-1a
   KeyPair:
     Description: Choose the Key for SSH access
     Type: 'AWS::EC2::KeyPair::KeyName'
@@ -29,47 +32,152 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 93c2acf8-8702-48ca-bc99-32b392bb75a2
-  InternetGateway:
-    Type: 'AWS::EC2::InternetGateway'
-    Properties: {}
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: c17a9f4b-b556-47dd-9f15-926fc375e89f
-  VPCGatewayAttachment:
-    Type: 'AWS::EC2::VPCGatewayAttachment'
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref ElectionVPC
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 528d5599-2ad3-43b4-978e-6f3b22e2abd4
   ConsolidationSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      CidrBlock: 10.0.2.0/24
       VpcId: !Ref ElectionVPC
+      Tags:
+        - Key: Name
+          Value: ConsolidationSubnet
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 6d9d5454-7572-4445-b702-372dcbc2dae3
   PresentationSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      CidrBlock: 10.0.3.0/24
       VpcId: !Ref ElectionVPC
+      Tags:
+        - Key: Name
+          Value: PresentationSubnet
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 9e548083-a7a7-4ef4-afb2-344264a462dd
-  ProctorsSubnet:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      VpcId: !Ref ElectionVPC
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
   DBsSubnet:
     Type: 'AWS::RDS::DBSubnetGroup'
     Properties: {}
     Metadata:
       'AWS::CloudFormation::Designer':
         id: a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+  ProctorsSubnet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      CidrBlock: 10.0.1.0/24
+      VpcId: !Ref ElectionVPC
+      Tags:
+        - Key: Name
+          Value: ProctorsSubnet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+  ProctorsInternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 746fbe7c-3060-4f03-98a0-806622deb1f5
+  ProctorsVPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref ProctorsInternetGateway
+      VpcId: !Ref ElectionVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 930c8d98-7643-4297-b491-45206c0f25be
+  ProctorsRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref ElectionVPC
+      Tags:
+        - Key: Name
+          Value: ProctorsRouteTable
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 2d3ec719-c3d9-42d2-9d28-89a5684fd562
+  ProctorsOutboundConnectionRoute:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref ProctorsRouteTable
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: dc65f81e-53d7-46cb-b3c4-97bf67ff36fc
+  ProctorsSubnetRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref ProctorsRouteTable
+      SubnetId: !Ref ProctorsSubnet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 8cfbef3f-8544-4aef-b49f-90336f15e58a
+  ProctorsSG:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref ElectionVPC
+      GroupDescription: Allows inbound http traffic
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      Tags:
+        - Key: Name
+          Value: ProctorsSG
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ded1ecdc-11b3-4459-9128-aee13d3fea95
+  ProctorsLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties:
+      LoadBalancerName: LoadBalancer
+      Listeners:
+        - InstancePort: 80
+          InstanceProtocol: HTTP
+          LoadBalancerPort: 80
+          Protocol: HTTP
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref ProctorsSG
+      Subnets:
+        - !Ref ProctorsSubnet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 995a0a5a-c980-435e-baae-64804d4a8615
+  ProctorsLaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId: !Ref ImageId
+      InstanceType: t2.micro
+      SecurityGroups: []
+    DependsOn: ProctorsVPCGatewayAttachment
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: cfc4c732-e1d6-4dff-a1b9-6cad1635b7c2
+  ProctorsASG:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      AvailabilityZones:
+        - !Ref AvailabilityZone
+      DesiredCapacity: 1
+      LaunchConfigurationName: !Ref ProctorsLaunchConfiguration
+      LoadBalancerNames:
+        - !Ref ProctorsLoadBalancer
+      MaxSize: 2
+      MinSize: 1
+      VPCZoneIdentifier:
+        - !Ref ProctorsSubnet
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 1
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 641fd073-c642-4172-b223-16792644a1df
   ContentionBucket:
     Type: 'AWS::S3::Bucket'
     Properties: {}
@@ -80,15 +188,17 @@ Metadata:
   'AWS::CloudFormation::Designer':
     93c2acf8-8702-48ca-bc99-32b392bb75a2:
       size:
-        width: 560
-        height: 320
+        width: 1470
+        height: 660
       position:
-        x: 150
-        'y': 30
+        x: 100
+        'y': -350
       z: 1
       embeds:
         - 20b0008d-92b3-4278-b78d-3e5bf55e8051
         - a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+        - ded1ecdc-11b3-4459-9128-aee13d3fea95
+        - 2d3ec719-c3d9-42d2-9d28-89a5684fd562
         - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
         - 9e548083-a7a7-4ef4-afb2-344264a462dd
         - 6d9d5454-7572-4445-b702-372dcbc2dae3
@@ -97,8 +207,8 @@ Metadata:
         width: 150
         height: 150
       position:
-        x: 150
-        'y': 180
+        x: 210
+        'y': 30
       z: 2
       parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
       embeds: []
@@ -107,8 +217,8 @@ Metadata:
         width: 150
         height: 150
       position:
-        x: 330
-        'y': 180
+        x: 1170
+        'y': -170
       z: 2
       parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
       embeds: []
@@ -117,8 +227,8 @@ Metadata:
         width: 150
         height: 150
       position:
-        x: 540
-        'y': 180
+        x: 1350
+        'y': 80
       z: 2
       parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
       embeds: []
@@ -127,8 +237,8 @@ Metadata:
         width: 150
         height: 120
       position:
-        x: 540
-        'y': 30
+        x: 1360
+        'y': -120
       z: 2
       parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
       embeds: []
@@ -137,22 +247,94 @@ Metadata:
         width: 60
         height: 60
       position:
-        x: 390
-        'y': 30
+        x: 1070
+        'y': -50
       z: 2
       parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
       embeds: []
-    c17a9f4b-b556-47dd-9f15-926fc375e89f:
+    746fbe7c-3060-4f03-98a0-806622deb1f5:
       size:
         width: 60
         height: 60
       position:
-        x: 10
-        'y': 150
+        x: -50
+        'y': -60
       z: 1
       embeds: []
-    528d5599-2ad3-43b4-978e-6f3b22e2abd4:
+    ded1ecdc-11b3-4459-9128-aee13d3fea95:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 410
+        'y': 70
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    2d3ec719-c3d9-42d2-9d28-89a5684fd562:
+      size:
+        width: 120
+        height: 150
+      position:
+        x: 230
+        'y': -240
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds:
+        - dc65f81e-53d7-46cb-b3c4-97bf67ff36fc
+    dc65f81e-53d7-46cb-b3c4-97bf67ff36fc:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 260
+        'y': -200
+      z: 3
+      parent: 2d3ec719-c3d9-42d2-9d28-89a5684fd562
+      embeds: []
+    930c8d98-7643-4297-b491-45206c0f25be:
       source:
-        id: c17a9f4b-b556-47dd-9f15-926fc375e89f
+        id: 746fbe7c-3060-4f03-98a0-806622deb1f5
       target:
         id: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+    cfc4c732-e1d6-4dff-a1b9-6cad1635b7c2:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 30
+        'y': 340
+      z: 1
+      embeds: []
+      dependson:
+        - 930c8d98-7643-4297-b491-45206c0f25be
+    995a0a5a-c980-435e-baae-64804d4a8615:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 260
+        'y': 340
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+        - ded1ecdc-11b3-4459-9128-aee13d3fea95
+    641fd073-c642-4172-b223-16792644a1df:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 150
+        'y': 340
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - cfc4c732-e1d6-4dff-a1b9-6cad1635b7c2
+        - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+        - 995a0a5a-c980-435e-baae-64804d4a8615
+    8cfbef3f-8544-4aef-b49f-90336f15e58a:
+      source:
+        id: 2d3ec719-c3d9-42d2-9d28-89a5684fd562
+      target:
+        id: 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
