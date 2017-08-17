@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Full stack for Exercise 3 of Globant's Cloud Academy
+Mappings:
+  RegionMap:
+    us-east-1:
+      AvailabilityZoneA: "us-east-1e"
+      AvailabilityZoneB: "us-east-1d"
+      AmznLinuxAmi: "ami-b73b63a0"
+      CentOS7Ami: "ami-6d1c2007"
+      RegionAlias: "Virginia"
+    us-west-2:
+      AvailabilityZoneA: "us-west-2c"
+      AvailabilityZoneB: "us-west-2b"
+      AmznLinuxAmi: "ami-5ec1673e"
+      CentOS7Ami: "ami-d2c924b2"
+      RegionAlias: "Oregon"
+Metadata:
+  'AWS::CloudFormation::Designer':
+    93c2acf8-8702-48ca-bc99-32b392bb75a2:
+      size:
+        width: 590
+        height: 310
+      position:
+        x: 141
+        'y': 29
+      z: 0
+      embeds:
+        - a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+        - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+        - 9e548083-a7a7-4ef4-afb2-344264a462dd
+        - 6d9d5454-7572-4445-b702-372dcbc2dae3
+        - 20b0008d-92b3-4278-b78d-3e5bf55e8051
+    450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef:
+      size:
+        width: 140
+        height: 140
+      position:
+        x: 150
+        'y': 190
+      z: 1
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    6d9d5454-7572-4445-b702-372dcbc2dae3:
+      size:
+        width: 150
+        height: 140
+      position:
+        x: 340
+        'y': 190
+      z: 1
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    9e548083-a7a7-4ef4-afb2-344264a462dd:
+      size:
+        width: 150
+        height: 140
+      position:
+        x: 550
+        'y': 190
+      z: 1
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    a1aa7cb6-4f39-45e9-b61d-28a866e1fc26:
+      size:
+        width: 150
+        height: 120
+      position:
+        x: 550
+        'y': 40
+      z: 1
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    20b0008d-92b3-4278-b78d-3e5bf55e8051:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 380
+        'y': 40
+      z: 1
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+Resources:
+  ElectionVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+  ConsolidationSubnet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref ElectionVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6d9d5454-7572-4445-b702-372dcbc2dae3
+  PresentationSubnet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref ElectionVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 9e548083-a7a7-4ef4-afb2-344264a462dd
+  ProctorsSubnet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref ElectionVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+  DBsSubnet:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+  ContentionBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 20b0008d-92b3-4278-b78d-3e5bf55e8051
