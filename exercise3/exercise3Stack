@@ -44,6 +44,16 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 6d9d5454-7572-4445-b702-372dcbc2dae3
+
+  DBsSubnet:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+
+##### START of Presentation #####
+
   PresentationSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -56,12 +66,88 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 9e548083-a7a7-4ef4-afb2-344264a462dd
-  DBsSubnet:
-    Type: 'AWS::RDS::DBSubnetGroup'
+  PresentationInternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
     Properties: {}
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+  PresentationVPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref PresentationInternetGateway
+      VpcId: !Ref ElectionVPC
+  PresentationRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref ElectionVPC
+      Tags:
+        - Key: Name
+          Value: PresentationRouteTable
+  PresentationOutboundConnectionRoute:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref PresentationInternetGateway
+      RouteTableId: !Ref ProctorsRouteTable
+  PresentationSubnetRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PresentationRouteTable
+      SubnetId: !Ref PresentationSubnet
+  PresentationSG:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref ElectionVPC
+      GroupDescription: Allows inbound http traffic
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      Tags:
+        - Key: Name
+          Value: PresentationSG
+  PresentationLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties:
+      LoadBalancerName: PresentationLoadBalancer
+      Listeners:
+        - InstancePort: 80
+          InstanceProtocol: HTTP
+          LoadBalancerPort: 80
+          Protocol: HTTP
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref PresentationSG
+      Subnets:
+        - !Ref PresentationSubnet
+  PresentationLaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId: !Ref ImageId
+      InstanceType: t2.micro
+      SecurityGroups: []
+    DependsOn: PresentationVPCGatewayAttachment
+  PresentationASG:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      AvailabilityZones:
+        - !Ref AvailabilityZone
+      DesiredCapacity: 1
+      LaunchConfigurationName: !Ref PresentationLaunchConfiguration
+      LoadBalancerNames:
+        - !Ref PresentationLoadBalancer
+      MaxSize: 2
+      MinSize: 1
+      VPCZoneIdentifier:
+        - !Ref PresentationSubnet
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 1
+
+##### END of Presentation #####
+
+##### START of Proctors #####
+
   ProctorsSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -102,7 +188,7 @@ Resources:
     Type: 'AWS::EC2::Route'
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
+      GatewayId: !Ref ProctorsInternetGateway
       RouteTableId: !Ref ProctorsRouteTable
     Metadata:
       'AWS::CloudFormation::Designer':
@@ -134,7 +220,7 @@ Resources:
   ProctorsLoadBalancer:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
-      LoadBalancerName: LoadBalancer
+      LoadBalancerName: ProctorsLoadBalancer
       Listeners:
         - InstancePort: 80
           InstanceProtocol: HTTP
@@ -178,6 +264,9 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 641fd073-c642-4172-b223-16792644a1df
+
+##### END OF Proctors #####
+
   ContentionBucket:
     Type: 'AWS::S3::Bucket'
     Properties: {}
