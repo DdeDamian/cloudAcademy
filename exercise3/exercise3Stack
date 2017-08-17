@@ -1,91 +1,48 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Full stack for Exercise 3 of Globant's Cloud Academy
+Parameters:
+  KeyPair:
+    Description: Choose the Key for SSH access
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    MinLength: 1
+    MaxLength: 255
+    ConstraintDescription: Must specify a KeyPair
 Mappings:
   RegionMap:
     us-east-1:
-      AvailabilityZoneA: "us-east-1e"
-      AvailabilityZoneB: "us-east-1d"
-      AmznLinuxAmi: "ami-b73b63a0"
-      CentOS7Ami: "ami-6d1c2007"
-      RegionAlias: "Virginia"
+      AvailabilityZoneA: us-east-1e
+      AvailabilityZoneB: us-east-1d
+      AmznLinuxAmi: ami-b73b63a0
+      CentOS7Ami: ami-6d1c2007
+      RegionAlias: Virginia
     us-west-2:
-      AvailabilityZoneA: "us-west-2c"
-      AvailabilityZoneB: "us-west-2b"
-      AmznLinuxAmi: "ami-5ec1673e"
-      CentOS7Ami: "ami-d2c924b2"
-      RegionAlias: "Oregon"
-Metadata:
-  'AWS::CloudFormation::Designer':
-    93c2acf8-8702-48ca-bc99-32b392bb75a2:
-      size:
-        width: 590
-        height: 310
-      position:
-        x: 141
-        'y': 29
-      z: 0
-      embeds:
-        - a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
-        - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
-        - 9e548083-a7a7-4ef4-afb2-344264a462dd
-        - 6d9d5454-7572-4445-b702-372dcbc2dae3
-        - 20b0008d-92b3-4278-b78d-3e5bf55e8051
-    450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef:
-      size:
-        width: 140
-        height: 140
-      position:
-        x: 150
-        'y': 190
-      z: 1
-      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
-      embeds: []
-    6d9d5454-7572-4445-b702-372dcbc2dae3:
-      size:
-        width: 150
-        height: 140
-      position:
-        x: 340
-        'y': 190
-      z: 1
-      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
-      embeds: []
-    9e548083-a7a7-4ef4-afb2-344264a462dd:
-      size:
-        width: 150
-        height: 140
-      position:
-        x: 550
-        'y': 190
-      z: 1
-      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
-      embeds: []
-    a1aa7cb6-4f39-45e9-b61d-28a866e1fc26:
-      size:
-        width: 150
-        height: 120
-      position:
-        x: 550
-        'y': 40
-      z: 1
-      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
-      embeds: []
-    20b0008d-92b3-4278-b78d-3e5bf55e8051:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 380
-        'y': 40
-      z: 1
-      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      AvailabilityZoneA: us-west-2c
+      AvailabilityZoneB: us-west-2b
+      AmznLinuxAmi: ami-5ec1673e
+      CentOS7Ami: ami-d2c924b2
+      RegionAlias: Oregon
 Resources:
   ElectionVPC:
     Type: 'AWS::EC2::VPC'
-    Properties: {}
+    Properties:
+      CidrBlock: 10.0.0.0/16
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: c17a9f4b-b556-47dd-9f15-926fc375e89f
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref ElectionVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 528d5599-2ad3-43b4-978e-6f3b22e2abd4
   ConsolidationSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -119,3 +76,83 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 20b0008d-92b3-4278-b78d-3e5bf55e8051
+Metadata:
+  'AWS::CloudFormation::Designer':
+    93c2acf8-8702-48ca-bc99-32b392bb75a2:
+      size:
+        width: 560
+        height: 320
+      position:
+        x: 150
+        'y': 30
+      z: 1
+      embeds:
+        - 20b0008d-92b3-4278-b78d-3e5bf55e8051
+        - a1aa7cb6-4f39-45e9-b61d-28a866e1fc26
+        - 450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef
+        - 9e548083-a7a7-4ef4-afb2-344264a462dd
+        - 6d9d5454-7572-4445-b702-372dcbc2dae3
+    450d73ed-3c6f-4a6f-92c1-a6f68a3a80ef:
+      size:
+        width: 150
+        height: 150
+      position:
+        x: 150
+        'y': 180
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    6d9d5454-7572-4445-b702-372dcbc2dae3:
+      size:
+        width: 150
+        height: 150
+      position:
+        x: 330
+        'y': 180
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    9e548083-a7a7-4ef4-afb2-344264a462dd:
+      size:
+        width: 150
+        height: 150
+      position:
+        x: 540
+        'y': 180
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    a1aa7cb6-4f39-45e9-b61d-28a866e1fc26:
+      size:
+        width: 150
+        height: 120
+      position:
+        x: 540
+        'y': 30
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    20b0008d-92b3-4278-b78d-3e5bf55e8051:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 390
+        'y': 30
+      z: 2
+      parent: 93c2acf8-8702-48ca-bc99-32b392bb75a2
+      embeds: []
+    c17a9f4b-b556-47dd-9f15-926fc375e89f:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 10
+        'y': 150
+      z: 1
+      embeds: []
+    528d5599-2ad3-43b4-978e-6f3b22e2abd4:
+      source:
+        id: c17a9f4b-b556-47dd-9f15-926fc375e89f
+      target:
+        id: 93c2acf8-8702-48ca-bc99-32b392bb75a2
