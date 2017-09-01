@@ -1,0 +1,27 @@
+service: miPrimerFaaS # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: python2.7
+functions:
+  hello:
+    handler: handler.hello
+    events:
+        - http:
+            path: /
+            method: get
+  mitest:
+    handler: handler.mitest
+    events:
+        - http:
+            path: /mitest
+            method: get
+        - http:
+            path: /mitest
+            method: post
+  mitestpost:
+    handler: handler.mitestpost
+    events:
+        - http:
+            path: /mitestpost
+            method: post
