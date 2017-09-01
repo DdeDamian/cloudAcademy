@@ -24,6 +24,9 @@ def mitest(event, context):
   return response
 
 def mitestpost(event, context):
+  first_name = event['first_name']
+  last_name = event['last_name']
+
   body = {
     "message": "Esta es mi prueba de una respuesta sin paramatros de entrada",
 #    "input": event
