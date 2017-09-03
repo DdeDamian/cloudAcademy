@@ -74,15 +74,12 @@ function applyRaceModifiers(sheet,race){
       sheet.primary.total.dextery = parseInt(sheet.primary.base.dextery) - 1;
   }
 
-
   return sheet;
-
 }
 
 function applyBackgroundModifiers(sheet,background){
 
   return sheet;
-
 }
 
 
@@ -136,14 +133,26 @@ module.exports.create = (event, context, callback) => {
 };
 
 module.exports.getAll = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'You get all characters info!',
-    }),
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
   };
 
-  callback(null, response);
+  dynamoDb.scan(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(new Error('Couldn\'t fetch the ccharacter sheets.'));
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Items),
+    };
+    callback(null, response);
+  });
 };
 
 module.exports.get = (event, context, callback) => {
