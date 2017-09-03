@@ -1,5 +1,10 @@
 'use strict';
 
+const uuid = require('uuid');
+const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
+
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
 function createSheet(dice){
 
   var sheet = {
@@ -103,13 +108,29 @@ module.exports.create = (event, context, callback) => {
   applyRaceModifiers(sheet,race);
   applyBackgroundModifiers(sheet,background);
 
-  // create a resonse
-  var response = {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Item: {
+      sheet_id: uuid.v1(),
+      sheet: sheet,
+      //checked: false,
+    },
+  };
+
+  dynamoDb.put(params, (error) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(new Error('Couldn\'t create the todo item.'));
+      return;
+    }
+  });
+
+  const response = {
     statusCode: 200,
-    body: JSON.stringify({
-      message: 'Character successfully created.' }),
-    sheet
-  }
+    body: JSON.stringify(params.Item),
+  };
+
   callback(null, response);
 
 };
