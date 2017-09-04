@@ -5,9 +5,12 @@ const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-depe
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-function createSheet(dice){
+function createSheet(dice, name, race, background){
 
   var sheet = {
+    name : name,
+    race : race,
+    background : background,
     primary : {
       base : {
         strenght : dice.strenght,
@@ -60,7 +63,9 @@ function createSheet(dice){
   return sheet;
 }
 
-function applyRaceModifiers(sheet,race){
+function applyRaceModifiers(sheet){
+
+  var race = sheet.race;
 
   if (race == "elf"){
     sheet.primary.total.dextery = String(parseInt(sheet.primary.base.dextery) + 2);
@@ -77,8 +82,9 @@ function applyRaceModifiers(sheet,race){
   return sheet;
 }
 
-function applyBackgroundModifiers(sheet,background){
+function applyBackgroundModifiers(sheet){
 
+  var background = sheet.background;
   return sheet;
 }
 
