@@ -67,18 +67,35 @@ function applyRaceModifiers(sheet){
 
   var race = sheet.race;
 
-  if (race == "elf"){
-    sheet.primary.total.dextery = String(parseInt(sheet.primary.base.dextery) + 2);
-  } else if (race == "dwarf"){
+  switch(race) {
+
+    case "elf":
+      sheet.primary.total.dextery = String(parseInt(sheet.primary.base.dextery) + 2);
+      break;
+    case "dwarf":
       sheet.primary.total.dextery = String(parseInt(sheet.primary.base.dextery) - 2);
       sheet.primary.total.charisma = String(parseInt(sheet.primary.base.charisma) - 2);
       sheet.primary.total.constitution = String(parseInt(sheet.primary.base.constitution) + 2);
-  } else if (race == "human"){
-      sheet.primary.total.dextery = parseInt(sheet.primary.base.dextery) + 1;
-  } else {
-      sheet.primary.total.dextery = parseInt(sheet.primary.base.dextery) - 1;
-  }
+      break;
+    case "human":
 
+      break;
+    case "orc":
+
+      break;
+    case "sirenian":
+
+      break;
+    case "goblin":
+
+      break;
+    case "gnome":
+
+      break;
+    default:
+
+      break;
+  }
   return sheet;
 }
 
