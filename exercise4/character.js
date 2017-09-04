@@ -156,14 +156,31 @@ module.exports.getAll = (event, context, callback) => {
 };
 
 module.exports.get = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'You get <id> stats!',
-    }),
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      sheet_id: event.path.charId,
+    },
   };
 
-  callback(null, response);
+  // fetch todo from the database
+  dynamoDb.get(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(new Error('Couldn\'t fetch the character sheet.'));
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Item),
+    };
+    callback(null, response);
+  });
+
 };
 
 module.exports.update = (event, context, callback) => {
@@ -178,13 +195,32 @@ module.exports.update = (event, context, callback) => {
 };
 
 module.exports.delete = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'You delete <id>, what have you done!?',
-    }),
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      sheet_id: event.path.charId,
+    },
   };
 
-  callback(null, response);
+  // delete the todo from the database
+  dynamoDb.delete(params, (error) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(new Error('Couldn\'t remove the sheet'));
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify({
+        message : 'Item Successfully deleted',
+      }),
+    };
+    callback(null, response);
+  });
+
 };
 
