@@ -44,7 +44,7 @@ This function is the main one for characters creation. In order to correctly cre
   {
     "name" : "Test Char",
     "race" : "dwarf",
-    "background" : "warrior",
+    "background" : "fighter",
     "dice" : {
       "strenght" : "5",
       "dextery" : "5",
@@ -58,8 +58,8 @@ This function is the main one for characters creation. In order to correctly cre
 
 Where  
   "name" is your characters name.  
-  "race" is your race, choosen from : elf, dwarf, human, orc, sirenian.  
-  "background" is the path you choose to follow with your character, picked from:  
+  "race" is your race, choosen from : elf, dwarf, human, orc, sirenian, goblin and gnome.  
+  "background" is the path you choose to follow with your character, picked from: Glib, Montaraz, Fighter, Studious and Cunning .  
 
 ##### GET     /character/{char_id}
 This returns the character sheet for the given ID. (The format is 87746c20-9198-11e7-8b44-45f885ad2b8c)
