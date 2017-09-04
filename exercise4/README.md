@@ -1,4 +1,9 @@
-# Lambda & API gateway proyect.
+# About the project.
+
+The main idea here is to develop and manage an Rest API to serve as processsing tool for a D*&*D character sheet store and creator. The final objective is to make this services available regarless the platform. So, if you want to make it run on Android, you just need to create the UI to use this services.
+The storage used is an AWS DynamoDB (you must create your own before start using the services).
+
+# Lambda & API gateway project.
 
 The idea here is to present the requirements and give some guidelines to make this code work.
 
@@ -11,7 +16,7 @@ First of all, you need to install npm package in order to access the other tools
 
 Now that you have  npm installed on your box is time to set up this project
 
-##### Install serveless.
+##### Install serverless.
 `$ npm install -g serverless`
 
 > If you have some issue installing serverless because of the absence of node run  $ sudo ln -s `which nodejs` /usr/bin/node
@@ -25,10 +30,6 @@ In order to connect to our AWS account, and be able to deploy our project, we ne
 Once everything is configure we are ready to deploy this project, how? Running this:  
 `$ serverless deploy`
 
-# About the project.
-
-The main idea here is to develop and manage an Rest API to serve as processsing tool for a D*&*D character sheet store and creator. The final objective is to make this services available regarless the platform. So, if you want to make it run on Android, you just need to create the UI to use this services.
-The storage used is an AWS DynamoDB (you must create your own before start using the services).
 
 # How it works.
 
@@ -56,9 +57,9 @@ This function is the main one for characters creation. In order to correctly cre
   }
 
 Where
-  "name" is your characters name
-  "race" is your race, choosen from : elf, dwarf, human, orc, sirenian.
-  "background" is the path you choose to follow with your character, picked from: 
+  "name" is your characters name.  
+  "race" is your race, choosen from : elf, dwarf, human, orc, sirenian.  
+  "background" is the path you choose to follow with your character, picked from:  
 
 ##### GET     /character/{char_id}
 This returns the character sheet for the given ID. (The format is 87746c20-9198-11e7-8b44-45f885ad2b8c)
