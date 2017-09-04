@@ -105,11 +105,18 @@ module.exports.create = (event, context, callback) => {
     return;
   }
 
+  var name = event.body.name;
+  if (typeof name !== 'string') {
+    console.error('Validation Failed');
+    callback(new Error('Name is mandatory.'));
+    return;
+  }
+
   var dice = event.body.dice;
 
-  var sheet = createSheet(dice);
-  applyRaceModifiers(sheet,race);
-  applyBackgroundModifiers(sheet,background);
+  var sheet = createSheet(dice, name, race, background);
+  applyRaceModifiers(sheet);
+  applyBackgroundModifiers(sheet);
 
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
