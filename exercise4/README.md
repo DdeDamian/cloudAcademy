@@ -56,7 +56,7 @@ This function is the main one for characters creation. In order to correctly cre
     }
   }
 
-Where
+Where  
   "name" is your characters name.  
   "race" is your race, choosen from : elf, dwarf, human, orc, sirenian.  
   "background" is the path you choose to follow with your character, picked from:  
