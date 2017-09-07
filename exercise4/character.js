@@ -61,7 +61,7 @@ function createSheet(dice, name, race, background){
     },
     secondary : {
       base : {
-        resistance : "0",
+        endurance : "0",
         magic : "0",
         power : "0",
         calm : "0",
@@ -69,7 +69,7 @@ function createSheet(dice, name, race, background){
         }
       },
       racial : {
-        resistance : "0",
+        endurance : "0",
         magic : "0",
         power : "0",
         calm : "0",
@@ -77,7 +77,7 @@ function createSheet(dice, name, race, background){
         }
       },
       advance : {
-        resistance : "0",
+        endurance : "0",
         magic : "0",
         power : "0",
         calm : "0",
@@ -85,7 +85,7 @@ function createSheet(dice, name, race, background){
         }
       },
       total : {
-        resistance : "0",
+        endurance : "0",
         magic : "0",
         power : "0",
         calm : "0",
@@ -286,13 +286,13 @@ function createSheet(dice, name, race, background){
       }
     },
     resources : {
-      life : dice.constitution,
+      life : "0",
       energy : "0",
-      spirit : dice.wisdom,
+      spirit : "0",
       mana : "0",
-      reaction : String(parseInt(dice.dextery) + parseInt(dice.inteligence)),
-      dodge : String(parseInt(dice.dextery) + parseInt(dice.inteligence)),
-      bleeding : dice.constitution
+      reaction : "0",
+      dodge : "0",
+      bleeding : "0"
     }
   }
 
@@ -390,8 +390,8 @@ function applyBackgroundModifiers(sheet){
   switch(race) {
     //Astuto
     case "cunning" :
-      sheet.secondary.base.resistance = String(parseInt(sheet.secondary.base.resistance) + 8);
-      sheet.secondary.total.resistance = String(parseInt(sheet.secondary.total.resistance) + 8);
+      sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 8);
+      sheet.secondary.total.endurance = String(parseInt(sheet.secondary.total.endurance) + 8);
       sheet.secondary.base.training.weapon1 = String(parseInt(sheet.secondary.base.training.weapon1) + 2);
       sheet.secondary.total.training.weapon1 = String(parseInt(sheet.secondary.total.training.weapon1) + 2);
       sheet.habilities.educationals.capability = "1";
@@ -404,8 +404,8 @@ function applyBackgroundModifiers(sheet){
     case "glib" :
       sheet.secondary.base.magic = String(parseInt(sheet.secondary.base.magic) + 2);
       sheet.secondary.total.magic = String(parseInt(sheet.secondary.total.magic) + 2);
-      sheet.secondary.base.resistance = String(parseInt(sheet.secondary.base.resistance) + 6);
-      sheet.secondary.total.resistance = String(parseInt(sheet.secondary.total.resistance) + 6);
+      sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 6);
+      sheet.secondary.total.endurance = String(parseInt(sheet.secondary.total.endurance) + 6);
       sheet.habilities.educationals.capability = "2";
       sheet.habilities.artistics.capability = "3";
       sheet.habilities.social.capability = "3";
@@ -413,8 +413,8 @@ function applyBackgroundModifiers(sheet){
       break;
     //Montaraz
     case "montaraz" :
-      sheet.secondary.base.resistance = String(parseInt(sheet.secondary.base.resistance) + 10);
-      sheet.secondary.total.resistance = String(parseInt(sheet.secondary.total.resistance) + 10);
+      sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 10);
+      sheet.secondary.total.endurance = String(parseInt(sheet.secondary.total.endurance) + 10);
       sheet.secondary.base.calm = String(parseInt(sheet.secondary.base.calm) + 2);
       sheet.secondary.total.calm = String(parseInt(sheet.secondary.total.calm) + 2);
       sheet.secondary.base.training.weapon1 = String(parseInt(sheet.secondary.base.training.weapon1) + 2);
@@ -428,15 +428,14 @@ function applyBackgroundModifiers(sheet){
       break;
     //Combatiente
     case "fighter" :
-      sheet.secondary.base.resistance = String(parseInt(sheet.secondary.base.resistance) + 10);
-      sheet.secondary.total.resistance = String(parseInt(sheet.secondary.total.resistance) + 10);
+      sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 10);
+      sheet.secondary.total.endurance = String(parseInt(sheet.secondary.total.endurance) + 10);
       sheet.secondary.base.training.weapon1 = String(parseInt(sheet.secondary.base.training.weapon1) + 2);
       sheet.secondary.total.training.weapon1 = String(parseInt(sheet.secondary.total.training.weapon1) + 2);
       sheet.habilities.educationals.capability = "2";
       sheet.habilities.athletics.capability = "3";
       sheet.habilities.socials.capability = "1";
       sheet.habilities.general.capability = "3";
-      //RESISTANCE
       break;
     //Aplicado
     case "studious" :
@@ -444,14 +443,13 @@ function applyBackgroundModifiers(sheet){
       sheet.secondary.total.magic = String(parseInt(sheet.secondary.total.magic) + 2);
       sheet.secondary.base.power = String(parseInt(sheet.secondary.base.power) + 1);
       sheet.secondary.total.power = String(parseInt(sheet.secondary.total.power) + 1);
-      sheet.secondary.base.resistance = String(parseInt(sheet.secondary.base.resistance) + 4);
-      sheet.secondary.total.resistance = String(parseInt(sheet.secondary.total.resistance) + 4);
+      sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 4);
+      sheet.secondary.total.endurance = String(parseInt(sheet.secondary.total.endurance) + 4);
       sheet.habilities.educationals.other.arcana = String(parseInt(sheet.habilities.educationals.other.arcana) + 3);
       sheet.habilities.educationals.total.arcana = String(parseInt(sheet.habilities.educationals.total.arcana) + 3);
       sheet.habilities.educationals.capability = "3";
       sheet.habilities.artistics.capability = "2";
       sheet.habilities.general.capability = "1";
-      sheet.resources.mana = String(parseInt(sheet.habilities.socials.total.gather_info) * 2)
       break;
   }
 
@@ -460,12 +458,40 @@ function applyBackgroundModifiers(sheet){
 
 function applySizeAdjustment(sheet){
 
-  var background = sheet.size;
   if ( sheet.size === "small" ){
     sheet.primary.total.strenght = String(parseInt(Math.floor(parseFloat(sheet.primary.base.strenght) - (parseFloat(sheet.primary.base.strenght)/4))));
     sheet.primary.total.constitution = String(parseInt(Math.floor(parseFloat(sheet.primary.base.constitution) - (parseFloat(sheet.primary.base.constitution)/4))));
-    sheet.secondary.total.resistance = String(parseInt(Math.floor(parseFloat(sheet.secondary.total.resistance) - (parseFloat(sheet.secondary.total.resistance)/4))));
+    sheet.secondary.total.endurance = String(parseInt(Math.floor(parseFloat(sheet.secondary.total.endurance) - (parseFloat(sheet.secondary.total.endurance)/4))));
   }
+  return sheet;
+}
+
+function calculateResources(sheet){
+
+      sheet.resources.life = String(parseInt(sheet.primary.total.constitution) + parseInt(sheet.secondary.total.endurance));
+      
+      if ( sheet.background === "fighter"){
+        sheet.resources.energy = String(parseInt(sheet.secondary.total.endurance) * 2);
+      }
+      else{
+        sheet.resources.energy = String(parseInt(Math.floor(parseFloat(sheet.secondary.total.endurance) * 1,5)));
+      }
+      
+      sheet.resources.spirit = String(parseInt(sheet.resources.spirit) + parseInt(sheet.primary.total.wisdom) + parseInt(sheet.secondary.total.calm));
+      
+      if ( sheet.background === "studious"){
+        sheet.resources.mana = String(parseInt(sheet.secondary.total.magic) * 2);
+      }
+      else{
+        sheet.resources.mana = String(parseInt(Math.floor(parseFloat(sheet.secondary.total.magic) * 1,5)));
+      }
+
+      sheet.resources.reaction = String(parseInt(sheet.primary.total.dextery) + parseInt(sheet.primary.total.inteligence);
+      
+      sheet.resources.dodge = String(parseInt(sheet.resources.reaction) + parseInt(Math.floor(parseFloat(sheet.habilities.athletics.total.acrobatics) / 4)));
+
+      sheet.resources.bleeding = sheet.primary.total.constitution;
+
   return sheet;
 }
 
@@ -498,6 +524,7 @@ module.exports.create = (event, context, callback) => {
   applyRaceModifiers(sheet);
   applyBackgroundModifiers(sheet);
   applySizeAdjustment(sheet);
+  calculateResources(sheet);
 
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
