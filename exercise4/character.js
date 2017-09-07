@@ -387,7 +387,7 @@ function applyBackgroundModifiers(sheet){
 
   var background = sheet.background;
 
-  switch(race) {
+  switch(background) {
     //Astuto
     case "cunning" :
       sheet.secondary.base.endurance = String(parseInt(sheet.secondary.base.endurance) + 8);
@@ -486,7 +486,7 @@ function calculateResources(sheet){
         sheet.resources.mana = String(parseInt(Math.floor(parseFloat(sheet.secondary.total.magic) * 1,5)));
       }
 
-      sheet.resources.reaction = String(parseInt(sheet.primary.total.dextery) + parseInt(sheet.primary.total.inteligence);
+      sheet.resources.reaction = String(parseInt(sheet.primary.total.dextery) + parseInt(sheet.primary.total.inteligence));
       
       sheet.resources.dodge = String(parseInt(sheet.resources.reaction) + parseInt(Math.floor(parseFloat(sheet.habilities.athletics.total.acrobatics) / 4)));
 
