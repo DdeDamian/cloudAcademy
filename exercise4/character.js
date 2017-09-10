@@ -14,7 +14,9 @@ function createSheet(dice, name, race, background){
     speed : "0",
     experience : "0",
     appearance : dice.appearance,
-    size : "",
+    size_multiplier : "1",
+    magic_multiplier: "1.5",
+    energy_multiplier: "1.5",
     details : {
       height : "",
       weight : "",
@@ -121,28 +123,41 @@ function createSheet(dice, name, race, background){
           other : "0",
           total : "0"
         },
-        play : {
-          first :{
-            name : "",
-            characteristic : "0",
-            advance : "0",
-            other : "0",
-            total : "0"
-          },
-          second :{
-            name : "",
-            characteristic : "0",
-            advance : "0",
-            other : "0",
-            total : "0"
-          },
-          third :{
-            name : "",
-            characteristic : "0",
-            advance : "0",
-            other : "0",
-            total : "0"
-          }
+       sing : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
+        },
+        dance : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
+        },
+        speech : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
+        },
+        strings : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
+        },
+        winds : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
+        },
+        percussions : {
+          characteristic : "0",
+          advance : "0",
+          other : "0",
+          total : "0"
         }
       },
       athletics : {
@@ -357,7 +372,6 @@ function applyRaceModifiers(sheet){
 
     case "elf":
       sheet.speed = "4";
-      sheet.size = "medium";
       sheet.primary.dextery.racial = String(parseInt(sheet.primary.dextery.racial) + 1);
       sheet.primary.inteligence.racial = String(parseInt(sheet.primary.inteligence.racial) + 1);
       sheet.primary.constitution.racial = String(parseInt(sheet.primary.constitution.racial) - 2);
@@ -367,19 +381,16 @@ function applyRaceModifiers(sheet){
       break;
     case "dwarf":
       sheet.speed = "2";
-      sheet.size = "medium";
       sheet.primary.dextery.racial = String(parseInt(sheet.primary.dextery.racial) - 2);
       sheet.primary.charisma.racial = String(parseInt(sheet.primary.charisma.racial) - 2);
       sheet.primary.constitution.racial = String(parseInt(sheet.primary.constitution.racial) + 2);
       break;
     case "human":
       sheet.speed = "4";
-      sheet.size = "medium";
       sheet.experience = String(parseInt(sheet.experience) + 2500);
       break;
     case "orc":
       sheet.speed = "4";
-      sheet.size = "medium";
       sheet.primary.strenght.racial = String(parseInt(sheet.primary.strenght.racial) + 3);
       sheet.primary.inteligence.racial = String(parseInt(sheet.primary.inteligence.racial) - 2);
       sheet.primary.wisdom.racial = String(parseInt(sheet.primary.wisdom.racial) - 1);
@@ -387,7 +398,6 @@ function applyRaceModifiers(sheet){
       break;
     case "sirenian":
       sheet.speed = "4";
-      sheet.size = "medium";
       sheet.primary.wisdom.racial = String(parseInt(sheet.primary.wisdom.racial) + 2);
       sheet.primary.strenght.racial = String(parseInt(sheet.primary.strenght.racial) - 2);
       sheet.primary.constitution.racial = String(parseInt(sheet.primary.constitution.racial) - 2);
@@ -395,13 +405,13 @@ function applyRaceModifiers(sheet){
       break;
     case "goblin":
       sheet.speed = "4";
-      sheet.size = "small";
+      sheet.size_multiplier = "0.75";
       sheet.primary.dextery.racial = String(parseInt(sheet.primary.dextery.racial) + 2);
       sheet.habilities.stealth.hide.other = String(parseInt(sheet.habilities.stealth.hide.other) + 4);
       break;
     case "gnome":
       sheet.speed = "2";
-      sheet.size = "small";
+      sheet.size_multiplier = "0.75";
       sheet.primary.inteligence.racial = String(parseInt(sheet.primary.inteligence.racial) + 2);
       sheet.habilities.socials.diplomacy.other = String(parseInt(sheet.habilities.socials.diplomacy.other) + 4);
       sheet.habilities.socials.deceive.other = String(parseInt(sheet.habilities.socials.deceive.other) + 4);
@@ -449,6 +459,7 @@ function applyBackgroundModifiers(sheet){
       break;
     //Combatiente
     case "fighter" :
+      sheet.energy_multiplier = "2";
       sheet.secondary.endurance.base = String(parseInt(sheet.secondary.endurance.base) + 10);
       sheet.secondary.training.first.base = String(parseInt(sheet.secondary.training.first.base) + 2);
       sheet.habilities.educationals.capability = "2";
@@ -458,6 +469,7 @@ function applyBackgroundModifiers(sheet){
       break;
     //Aplicado
     case "studious" :
+      sheet.magic_multiplier = "2";
       sheet.secondary.magic.base = String(parseInt(sheet.secondary.magic.base) + 2);
       sheet.secondary.power.base = String(parseInt(sheet.secondary.power.base) + 1);
       sheet.secondary.endurance.base = String(parseInt(sheet.secondary.endurance.base) + 4);
@@ -473,14 +485,7 @@ function applyBackgroundModifiers(sheet){
 
 function applySizeAdjustment(sheet){
 
-  var multiplier = 0.0;
-
-  if ( sheet.size === "small" ){
-    multiplier = 0.75;
-  }
-  else{
-    multiplier = 1.0;
-  }
+  var multiplier = parseFloat(sheet.size_multiplier);
 
   //Primary totals calculation
   sheet.primary.strenght.total = String( Math.floor((parseInt(sheet.primary.strenght.base) + parseInt(sheet.primary.strenght.racial) + parseInt(sheet.primary.strenght.advance)) * multiplier));
@@ -505,6 +510,12 @@ function calculateTotalHabilities(sheet){
   //Habilities characteristic update
 
   sheet.habilities.artistics.disguise.characteristic = sheet.primary.inteligence.total;
+  sheet.habilities.artistics.sing.characteristic = sheet.primary.charisma.total;
+  sheet.habilities.artistics.dance.characteristic = sheet.primary.charisma.total;
+  sheet.habilities.artistics.speech.characteristic = sheet.primary.charisma.total;
+  sheet.habilities.artistics.strings.characteristic = sheet.primary.charisma.total;
+  sheet.habilities.artistics.winds.characteristic = sheet.primary.charisma.total;
+  sheet.habilities.artistics.percussions.characteristic = sheet.primary.charisma.total;
   sheet.habilities.athletics.acrobatics.characteristic = sheet.primary.dextery.total;
   sheet.habilities.athletics.balance.characteristic = sheet.primary.dextery.total;
   sheet.habilities.athletics.mount.characteristic = sheet.primary.dextery.total;
@@ -573,25 +584,15 @@ function calculateTotalHabilities(sheet){
 function calculateResources(sheet){
 
   sheet.resources.life = String(parseInt(sheet.primary.constitution.total) + parseInt(sheet.secondary.endurance.total));
-  
-  if ( sheet.background === "fighter"){
-    sheet.resources.energy = String(parseInt(sheet.secondary.endurance.total) * 2);
-  }
-  else{
-    sheet.resources.energy = String(parseInt(Math.floor(parseFloat(sheet.secondary.endurance.total) * 1,5)));
-  }
-  
+
+  sheet.resources.energy = String( parseInt( Math.floor( (parseInt(sheet.primary.constitution.total) + parseFloat(sheet.secondary.endurance.total) ) * parseFloat(sheet.energy_multiplier) )));
+
   sheet.resources.spirit = String(parseInt(sheet.resources.spirit) + parseInt(sheet.primary.wisdom.total) + parseInt(sheet.secondary.calm.total));
-  
-  if ( sheet.background === "studious"){
-    sheet.resources.mana = String(parseInt(sheet.secondary.magic.total) * 2);
-  }
-  else{
-    sheet.resources.mana = String(parseInt(Math.floor(parseFloat(sheet.secondary.magic.total) * 1,5)));
-  }
+
+  sheet.resources.mana = String( parseInt( Math.floor( parseFloat(sheet.secondary.magic.total) * parseFloat(sheet.magic_multiplier) ) ) );
 
   sheet.resources.reaction = String(parseInt(sheet.primary.dextery.total) + parseInt(sheet.primary.inteligence.total));
-  
+
   sheet.resources.dodge = String(parseInt(sheet.resources.reaction) + parseInt(Math.floor(parseFloat(sheet.habilities.athletics.acrobatics.total) / 4)));
 
   sheet.resources.bleeding = sheet.primary.constitution.total;
